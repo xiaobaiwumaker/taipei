@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xiaobaiwumaker | 大安古風里維護中樞</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Noto+Sans+TC:wght=400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="modern-header">
+        <h1 class="header-title">xiaobaiwumaker 系統</h1>
+        <p class="header-subtitle">古風里生活智慧中樞 ． 物件運行狀態監測</p>
+        <div class="tech-glow-line"></div>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="instrument-card fan" data-status="正常">
+            <h2 class="card-title">風力單元</h2>
+            <p class="appliance-name">客廳 電風扇</p>
+            <div class="status-indicator">狀態：<span>正常</span></div>
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value" data-value="85">85%</div>
+                    <div class="metric-label">葉片潔淨度</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" data-value="1500">1500h</div>
+                    <div class="metric-label">累計運轉時數</div>
+                </div>
+            </div>
+            <button class="action-button">運行日誌</button>
+        </section>
+
+        <section class="instrument-card rice-cooker" data-status="警告">
+            <h2 class="card-title">加熱單元</h2>
+            <p class="appliance-name">廚房 電鍋</p>
+            <div class="status-indicator">狀態：<span>警告</span></div>
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value" data-value="95">95°C</div>
+                    <div class="metric-label">底盤異常溫度</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" data-value="18">18次</div>
+                    <div class="metric-label">近期啟動次數</div>
+                </div>
+            </div>
+            <button class="action-button">快速檢修</button>
+        </section>
+
+        <section class="instrument-card dryer" data-status="異常">
+            <h2 class="card-title">空氣熱交換單元</h2>
+            <p class="appliance-name">浴室 吹風機</p>
+            <div class="status-indicator">狀態：<span>異常</span></div>
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value" data-value="75">75dB</div>
+                    <div class="metric-label">運轉噪音分貝</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" data-value="480">480W</div>
+                    <div class="metric-label">瞬時功率異常</div>
+                </div>
+            </div>
+            <button class="action-button">緊急停機</button>
+        </section>
+        
+        <section class="instrument-card notice-card" data-status="資訊">
+            <h2 class="card-title">服務通知</h2>
+            <p class="appliance-name">系統維護與提醒</p>
+            <p class="guide-text">「注意：近期古風里電網例行檢查，建議在**2025.12.01**前完成所有電器自檢。」</p>
+            <button class="action-button">里內公告</button>
+        </section>
+    </main>
+
+    <footer class="modern-footer">
+        <p>© 2025 xiaobaiwumaker | 數位資產管理 v2.1</p>
+        <div id="current-time" class="tech-time"></div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
