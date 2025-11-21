@@ -1,0 +1,202 @@
+/* 顏色變數：定義主題顏色 */
+:root {
+    --bg-color-light: #f4f7f6; /* 小白屋主色：淺色/白色 */
+    --text-color-dark: #333; /* 主文字顏色 */
+    --tech-panel-dark: #1e2a38; /* 儀表板深色背景 */
+    --tech-main: #00bcd4; /* 科技主色：青藍色 (Neon Blue/Cyan) */
+    --tech-accent: #00e676; /* 輔助色/正常狀態：亮綠色 */
+    --status-normal: var(--tech-accent); 
+    --status-warning: #ffc107; /* 警告狀態：琥珀黃 */
+    --status-error: #f44336; /* 異常狀態：紅色 */
+    --font-modern: 'Roboto', 'Noto Sans TC', sans-serif; 
+}
+
+/* 基礎和字體設置 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-modern);
+    background-color: var(--bg-color-light); /* 淺色背景 */
+    color: var(--text-color-dark);
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* --- 標頭：簡約現代風格 --- */
+.modern-header {
+    text-align: center;
+    padding: 30px 0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.header-title {
+    font-size: 2.5rem;
+    color: var(--text-color-dark);
+    font-weight: 700;
+}
+
+.header-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* 科技強調線 */
+.tech-glow-line {
+    position: absolute;
+    bottom: -2px;
+    left: 10%;
+    width: 80%;
+    height: 3px;
+    background: var(--tech-main);
+    box-shadow: 0 0 10px var(--tech-main); 
+    border-radius: 2px;
+}
+
+/* --- 主要儀表板容器：RWD Grid 佈局 --- */
+.dashboard-container {
+    display: grid;
+    gap: 30px; 
+    padding: 0 5%;
+    /* RWD: 手機版一欄，平板/桌面兩欄 */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+/* --- 儀表板卡片：深色科技面板，在淺色背景中跳出 --- */
+.instrument-card {
+    background-color: var(--tech-panel-dark); /* 深色背景 */
+    color: #e0f7fa; /* 淺藍色文字 */
+    border-radius: 8px;
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    /* 科技感外框光暈 */
+    box-shadow: 0 0 15px rgba(0, 188, 212, 0.4); 
+    border: 1px solid rgba(0, 188, 212, 0.5);
+}
+
+.instrument-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 25px rgba(0, 188, 212, 0.8), 0 0 30px var(--tech-main);
+}
+
+.card-title {
+    font-size: 1.6rem;
+    color: var(--tech-main);
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.appliance-name {
+    color: #99aab5;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+/* --- 狀態指示器：動態霓虹 --- */
+.status-indicator {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.status-indicator span {
+    color: var(--status-normal); 
+    text-shadow: 0 0 10px var(--status-normal); /* 霓虹效果 */
+    padding-left: 5px;
+    transition: all 0.3s;
+}
+
+/* 數據指標區塊 */
+.metrics {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metric {
+    text-align: center;
+}
+
+.metric-value {
+    font-family: 'Roboto', monospace; /* 使用 monospace 增強數位感 */
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--tech-main);
+    text-shadow: 0 0 10px var(--tech-main); /* 科技數字光暈 */
+    line-height: 1;
+}
+
+.metric-label {
+    font-size: 0.85rem;
+    color: #7986cb; /* 輔助文字 */
+    margin-top: 5px;
+}
+
+/* --- 行動按鈕：科技感按鈕 --- */
+.action-button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: transparent;
+    border: 2px solid var(--tech-main);
+    color: var(--tech-main);
+    font-family: var(--font-modern);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 8px var(--tech-main);
+    border-radius: 4px;
+}
+
+.action-button:hover {
+    background-color: var(--tech-main);
+    color: var(--tech-panel-dark);
+    box-shadow: 0 0 25px var(--tech-main);
+}
+
+/* --- 底部：時間與版權 --- */
+.modern-footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+}
+
+.tech-time {
+    color: var(--status-warning); /* 時間使用琥珀色營造警示/重要感 */
+    text-shadow: 0 0 5px var(--status-warning);
+    font-family: 'Roboto', monospace;
+    font-size: 1.2rem;
+    margin-top: 5px;
+}
+
+/* --- RWD 優化 --- */
+@media (max-width: 650px) {
+    .header-title {
+        font-size: 2rem;
+    }
+    .dashboard-container {
+        padding: 0 10px;
+        gap: 20px;
+    }
+    .metric-value {
+        font-size: 2rem;
+    }
+}
