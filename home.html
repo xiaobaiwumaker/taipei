@@ -3,55 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xiaobaiwumaker | 大安古風里維護中樞</title>
+    <title>xiaobaiwumaker | 家電維修診斷中樞</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="modern-header">
-        <h1 class="header-title">xiaobaiwumaker 系統</h1>
-        <p class="header-subtitle">古風里生活智慧中樞 ． 物件運行狀態監測</p>
+        <h1 class="header-title">xiaobaiwumaker 家電維修診斷系統</h1>
+        <p class="header-subtitle">大安區古風里專屬 ． 故障追蹤與報修中心</p>
         <div class="tech-glow-line"></div>
     </header>
 
     <main class="dashboard-container">
         <section class="instrument-card fan" data-status="正常">
-            <h2 class="card-title">風力單元</h2>
-            <p class="appliance-name">客廳 電風扇</p>
+            <h2 class="card-title">風扇電機 (正常運行)</h2>
+            <p class="appliance-name">客廳 電風扇 | 型號: F-205</p>
             <div class="status-indicator">狀態：<span>正常</span></div>
             <div class="metrics">
                 <div class="metric">
                     <div class="metric-value" data-value="85">85%</div>
-                    <div class="metric-label">葉片潔淨度</div>
+                    <div class="metric-label">葉片潔淨度 (建議清理)</div>
                 </div>
                 <div class="metric">
                     <div class="metric-value" data-value="1500">1500h</div>
                     <div class="metric-label">累計運轉時數</div>
                 </div>
             </div>
-            <button class="action-button">運行日誌</button>
+            <button class="action-button">預約深度清潔</button>
         </section>
 
         <section class="instrument-card rice-cooker" data-status="警告">
-            <h2 class="card-title">加熱單元</h2>
-            <p class="appliance-name">廚房 電鍋</p>
+            <h2 class="card-title">加熱線圈 (溫度異常)</h2>
+            <p class="appliance-name">廚房 電鍋 | 型號: R-888</p>
             <div class="status-indicator">狀態：<span>警告</span></div>
             <div class="metrics">
                 <div class="metric">
                     <div class="metric-value" data-value="95">95°C</div>
-                    <div class="metric-label">底盤異常溫度</div>
+                    <div class="metric-label">底盤異常溫度 (超過閾值)</div>
                 </div>
                 <div class="metric">
                     <div class="metric-value" data-value="18">18次</div>
                     <div class="metric-label">近期啟動次數</div>
                 </div>
             </div>
-            <button class="action-button">快速檢修</button>
+            <button class="action-button">🚨 立即報修此故障</button>
         </section>
 
         <section class="instrument-card dryer" data-status="異常">
-            <h2 class="card-title">空氣熱交換單元</h2>
-            <p class="appliance-name">浴室 吹風機</p>
+            <h2 class="card-title">電源線路 (功率異常)</h2>
+            <p class="appliance-name">浴室 吹風機 | 型號: H-3000</p>
             <div class="status-indicator">狀態：<span>異常</span></div>
             <div class="metrics">
                 <div class="metric">
@@ -63,19 +63,19 @@
                     <div class="metric-label">瞬時功率異常</div>
                 </div>
             </div>
-            <button class="action-button">緊急停機</button>
+            <button class="action-button">🔴 進行緊急維修報單</button>
         </section>
         
         <section class="instrument-card notice-card" data-status="資訊">
-            <h2 class="card-title">服務通知</h2>
-            <p class="appliance-name">系統維護與提醒</p>
-            <p class="guide-text">「注意：近期古風里電網例行檢查，建議在**2025.12.01**前完成所有電器自檢。」</p>
-            <button class="action-button">里內公告</button>
+            <h2 class="card-title">快速報修流程</h2>
+            <p class="appliance-name">服務熱線與追蹤</p>
+            <p class="guide-text">「點擊下方按鈕，可直接聯繫 **xiaobaiwumaker** 專屬維修技師，追蹤維修單號。」</p>
+            <button class="action-button">聯繫維修專員</button>
         </section>
     </main>
 
     <footer class="modern-footer">
-        <p>© 2025 xiaobaiwumaker | 數位資產管理 v2.1</p>
+        <p>© 2025 xiaobaiwumaker | 古風里在地家電維修服務</p>
         <div id="current-time" class="tech-time"></div>
     </footer>
 
