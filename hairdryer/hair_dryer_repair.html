@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>吹風機維修診斷儀表板</title>
+    <title>吹風機維修診斷儀表板 v2.0</title>
     <style>
         :root {
             --bg-color: #1a1e23;
@@ -14,6 +14,7 @@
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
+            --youtube: #ff0000;
             --border: #374151;
         }
 
@@ -126,7 +127,50 @@
         .status-ok { color: var(--success); }
         .status-fail { color: var(--danger); }
         
-        /* Visual Diagram Placeholder */
+        /* Video Grid Styles */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .video-card {
+            background: #1f242b;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: transform 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .video-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--youtube);
+        }
+
+        .play-icon {
+            font-size: 2rem;
+            color: var(--youtube);
+            margin-bottom: 10px;
+        }
+
+        .video-title {
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .video-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Diagram */
         .diagram {
             background: #111827;
             height: 200px;
@@ -137,14 +181,6 @@
             border: 2px dashed var(--border);
             color: var(--text-muted);
             position: relative;
-        }
-        
-        .diagram-overlay {
-            position: absolute;
-            bottom: 10px; 
-            right: 10px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
         }
 
         /* Footer */
@@ -169,7 +205,7 @@
     <header>
         <div>
             <h1>吹風機維修儀表板</h1>
-            <p style="color: var(--text-muted); margin-top:5px;">型號：通用型 (AC 110V/220V)</p>
+            <p style="color: var(--text-muted); margin-top:5px;">型號：通用型 (含影音參考)</p>
         </div>
         <div id="systemStatus" class="status-badge">檢測中...</div>
     </header>
@@ -193,181 +229,4 @@
         <div id="analysisResult">
             <ul style="padding-left: 20px;">
                 <li><strong>加熱絲斷裂 (Heating Element Open)</strong> - 80% 機率</li>
-                <li><strong>溫度保險絲燒毀 (Thermal Fuse Blown)</strong> - 15% 機率</li>
-                <li><strong>檔位開關/雙金屬片故障</strong> - 5% 機率</li>
-            </ul>
-            <p style="font-size:0.9rem; color:var(--accent)">建議檢測順序：保險絲 &rarr; 加熱絲 &rarr; 開關</p>
-        </div>
-    </div>
-
-    <div class="card full-width">
-        <div class="card-header">
-            <h3>3. 三用電表檢測實驗室 (Multimeter Check)</h3>
-            <span style="font-size:0.8rem; color:var(--text-muted)">請將電表轉至歐姆檔 (Ω)</span>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-            
-            <div class="meter-group">
-                <label>A. 溫度保險絲 (Thermal Fuse)</label>
-                <input type="number" id="fuseInput" placeholder="輸入數值 (Ω)" oninput="checkComponent('fuse')">
-                <div class="result-display" id="fuseResult">等待輸入...</div>
-                <small style="color:var(--text-muted)">正常應接近 0-2 Ω</small>
-            </div>
-
-            <div class="meter-group">
-                <label>B. 加熱絲 (Heating Element)</label>
-                <input type="number" id="heaterInput" placeholder="輸入數值 (Ω)" oninput="checkComponent('heater')">
-                <div class="result-display" id="heaterResult">等待輸入...</div>
-                <small style="color:var(--text-muted)">正常應為 20-100 Ω 之間</small>
-            </div>
-
-            <div class="meter-group">
-                <label>C. 開關接點 (Switch Contacts)</label>
-                <input type="number" id="switchInput" placeholder="輸入數值 (Ω)" oninput="checkComponent('switch')">
-                <div class="result-display" id="switchResult">等待輸入...</div>
-                <small style="color:var(--text-muted)">切換至熱風檔應導通 (0 Ω)</small>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <h3>4. 電路簡圖 (Reference)</h3>
-        </div>
-        <div class="diagram">
-            <svg width="200" height="150" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-                <rect x="20" y="60" width="30" height="30" stroke="#3b82f6" fill="none" stroke-width="2"/>
-                <text x="22" y="80" font-size="10" fill="#3b82f6">Motor</text>
-                
-                <line x1="50" y1="75" x2="80" y2="75" stroke="#9ca3af" stroke-width="2"/>
-                
-                <path d="M80,75 Q90,55 100,75 T120,75 T140,75" stroke="#ef4444" fill="none" stroke-width="3"/>
-                <text x="100" y="50" font-size="10" fill="#ef4444">Heater</text>
-
-                <rect x="150" y="70" width="20" height="10" fill="#f59e0b"/>
-                <text x="145" y="95" font-size="10" fill="#f59e0b">T.Fuse</text>
-
-                <line x1="170" y1="75" x2="190" y2="75" stroke="#9ca3af" stroke-width="2"/>
-            </svg>
-        </div>
-        <p style="font-size: 0.85rem; margin-top: 10px; color: var(--text-muted);">
-            * 圖示為常見串並聯混合架構。如果保險絲與加熱絲串聯，保險絲斷則無熱。
-        </p>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <h3>5. 維修建議 (Action Plan)</h3>
-        </div>
-        <div id="actionPlan">
-            根據目前的輸入數據，請先完成上方測量。
-        </div>
-    </div>
-
-    <div class="full-width warning-box">
-        <strong>⚠️ 安全警示：</strong> 請務必拔除電源插頭後再拆機檢測。維修高功率電器有觸電與火災風險，若不確定請尋求專業協助。
-        測試時僅使用電表電阻檔 (Ω)，不可通電測量電阻。
-    </div>
-
-</div>
-
-<script>
-    // Component Logic
-    function checkComponent(type) {
-        const input = document.getElementById(type + 'Input').value;
-        const display = document.getElementById(type + 'Result');
-        let val = parseFloat(input);
-        let status = 'unknown';
-
-        if (input === '') {
-            display.innerHTML = '等待輸入...';
-            display.className = 'result-display';
-            updateActionPlan();
-            return;
-        }
-
-        // Logic definitions
-        if (type === 'fuse' || type === 'switch') {
-            // Expecting near 0 ohms
-            if (val < 5) {
-                display.innerHTML = '✅ 正常導通 (Pass)';
-                display.className = 'result-display status-ok';
-                status = 'pass';
-            } else {
-                display.innerHTML = '❌ 斷路/損壞 (Fail)';
-                display.className = 'result-display status-fail';
-                status = 'fail';
-            }
-        } else if (type === 'heater') {
-            // Expecting 20-100 ohms (approx)
-            if (val > 10 && val < 500) {
-                display.innerHTML = '✅ 正常 (Pass)';
-                display.className = 'result-display status-ok';
-                status = 'pass';
-            } else if (val <= 10) {
-                 display.innerHTML = '⚠️ 阻值過低/短路';
-                 display.className = 'result-display status-fail';
-                 status = 'short';
-            } else {
-                display.innerHTML = '❌ 斷路/燒毀 (Open)';
-                display.className = 'result-display status-fail';
-                status = 'fail';
-            }
-        }
-
-        updateSystemStatus();
-        updateActionPlan();
-    }
-
-    function selectSymptom(symptom) {
-        // Visual update for buttons
-        const buttons = document.querySelectorAll('.flow-btn');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-
-        const analysis = document.getElementById('analysisResult');
-        
-        // Content update
-        if (symptom === 'fan-no-heat') {
-            analysis.innerHTML = `
-                <ul style="padding-left: 20px;">
-                    <li><strong>加熱絲斷裂</strong> - 最常見。</li>
-                    <li><strong>溫度保險絲</strong> - 需要檢查是否開路。</li>
-                </ul>`;
-        } else if (symptom === 'no-power') {
-            analysis.innerHTML = `
-                <ul style="padding-left: 20px;">
-                    <li><strong>電源線斷裂</strong> - 檢查插頭根部。</li>
-                    <li><strong>主開關故障</strong>。</li>
-                    <li><strong>全機保險絲</strong> - 部分機種有總保險絲。</li>
-                </ul>`;
-        } else {
-            analysis.innerHTML = `<p>請針對特定元件進行清潔或目視檢查。</p>`;
-        }
-    }
-
-    function updateActionPlan() {
-        const fuseStatus = document.getElementById('fuseResult').innerText;
-        const heaterStatus = document.getElementById('heaterResult').innerText;
-        const planDiv = document.getElementById('actionPlan');
-
-        if (heaterStatus.includes('斷路')) {
-            planDiv.innerHTML = "<strong style='color:#ef4444'>診斷結果：</strong> 加熱絲燒毀。<br>建議：更換雲母片加熱組件，或者若是斷在端點，可嘗試重新壓接（勿用焊接，高溫會融化）。";
-            document.getElementById('systemStatus').innerText = "確認故障：加熱絲";
-            document.getElementById('systemStatus').style.background = "#ef4444";
-        } else if (fuseStatus.includes('斷路')) {
-            planDiv.innerHTML = "<strong style='color:#ef4444'>診斷結果：</strong> 溫度保險絲熔斷。<br>建議：更換同規格溫度保險絲（常見為 100°C - 150°C，請看元件標示）。需使用壓接套管，不可直接焊接保險絲。";
-            document.getElementById('systemStatus').innerText = "確認故障：保險絲";
-            document.getElementById('systemStatus').style.background = "#ef4444";
-        } else if (heaterStatus.includes('正常') && fuseStatus.includes('正常')) {
-             planDiv.innerHTML = "<strong style='color:#10b981'>元件看似正常？</strong><br>請檢查開關接點是否氧化，或是內部配線是否有鬆脫。";
-             document.getElementById('systemStatus').innerText = "需進一步檢查";
-             document.getElementById('systemStatus').style.background = "#3b82f6";
-        }
-    }
-</script>
-
-</body>
-</html>
+                <li><strong>溫度保險絲燒毀 (Thermal
