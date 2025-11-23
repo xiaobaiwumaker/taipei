@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>吹風機維修診斷儀表板 v2.0</title>
+    <title>吹風機維修診斷儀表板 v2.1 (修正版)</title>
     <style>
         :root {
             --bg-color: #1a1e23;
@@ -56,6 +56,7 @@
             border-radius: 20px;
             font-weight: bold;
             font-size: 0.9rem;
+            transition: background-color 0.3s ease;
         }
 
         /* Cards */
@@ -65,6 +66,7 @@
             border-radius: 12px;
             border: 1px solid var(--border);
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            position: relative; /* 確保層級正確 */
         }
 
         .full-width { grid-column: 1 / -1; }
@@ -78,11 +80,11 @@
             padding-bottom: 10px;
         }
 
-        /* Logic Flow */
+        /* Logic Flow Buttons */
         .flow-btn {
             display: block;
             width: 100%;
-            padding: 12px;
+            padding: 15px; /* 加大點擊範圍 */
             margin-bottom: 10px;
             background: #374151;
             border: 1px solid var(--border);
@@ -90,22 +92,32 @@
             text-align: left;
             cursor: pointer;
             border-radius: 6px;
-            transition: 0.2s;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            position: relative;
+            z-index: 10; /* 確保按鈕在最上層 */
         }
 
-        .flow-btn:hover { background: #4b5563; }
-        .flow-btn.active { background: var(--accent); border-color: var(--accent); }
+        .flow-btn:hover { 
+            background: #4b5563; 
+            transform: translateX(5px); /* 增加互動感 */
+        }
+        
+        .flow-btn.active { 
+            background: var(--accent); 
+            border-color: var(--accent); 
+            color: white;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
 
         /* Multimeter Input Section */
-        .meter-group {
-            margin-bottom: 15px;
-        }
+        .meter-group { margin-bottom: 15px; }
         
         label { display: block; margin-bottom: 5px; color: var(--text-muted); font-size: 0.9rem; }
         
         input[type="number"] {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: #111827;
             border: 1px solid var(--border);
             color: var(--success);
@@ -122,51 +134,58 @@
             border-radius: 6px;
             font-weight: bold;
             text-align: center;
+            min-height: 24px; /* 防止高度塌陷 */
         }
 
-        .status-ok { color: var(--success); }
-        .status-fail { color: var(--danger); }
+        .status-ok { color: var(--success); background: rgba(16, 185, 129, 0.1); }
+        .status-fail { color: var(--danger); background: rgba(239, 68, 68, 0.1); }
         
-        /* Video Grid Styles */
+        /* Video Grid Styles - 強化點擊區 */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 15px;
         }
 
-        .video-card {
+        a.video-card {
             background: #1f242b;
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 15px;
+            padding: 20px;
             text-decoration: none;
             color: var(--text-main);
-            transition: transform 0.2s, border-color 0.2s;
+            transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
+            cursor: pointer; /* 強制顯示手指游標 */
+            position: relative;
+            z-index: 5;
         }
 
-        .video-card:hover {
-            transform: translateY(-3px);
+        a.video-card:hover {
+            transform: translateY(-5px);
             border-color: var(--youtube);
+            background: #2d333b;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         .play-icon {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: var(--youtube);
             margin-bottom: 10px;
         }
 
         .video-title {
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 1rem;
             margin-bottom: 5px;
+            color: #fff;
         }
 
         .video-desc {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
 
@@ -180,7 +199,7 @@
             justify-content: center;
             border: 2px dashed var(--border);
             color: var(--text-muted);
-            position: relative;
+            overflow: hidden;
         }
 
         /* Footer */
@@ -205,28 +224,248 @@
     <header>
         <div>
             <h1>吹風機維修儀表板</h1>
-            <p style="color: var(--text-muted); margin-top:5px;">型號：通用型 (含影音參考)</p>
+            <p style="color: var(--text-muted); margin-top:5px;">狀態：互動模式 (v2.1)</p>
         </div>
-        <div id="systemStatus" class="status-badge">檢測中...</div>
+        <div id="systemStatus" class="status-badge">請選擇故障現象</div>
     </header>
 
     <div class="card">
         <div class="card-header">
-            <h3>1. 故障現象 (Symptom)</h3>
+            <h3>1. 故障現象 (點擊選擇)</h3>
         </div>
         <div id="symptoms">
-            <button class="flow-btn" onclick="selectSymptom('no-power')">完全不通電 (無風無熱)</button>
-            <button class="flow-btn active" onclick="selectSymptom('fan-no-heat')">有風無熱 (Fan OK, No Heat)</button>
-            <button class="flow-btn" onclick="selectSymptom('smell')">有焦味 / 異音</button>
-            <button class="flow-btn" onclick="selectSymptom('intermittent')">時好時壞 (接觸不良)</button>
+            <button class="flow-btn" onclick="selectSymptom('no-power', this)">完全不通電 (無風無熱)</button>
+            <button class="flow-btn active" onclick="selectSymptom('fan-no-heat', this)">有風無熱 (Fan OK, No Heat)</button>
+            <button class="flow-btn" onclick="selectSymptom('smell', this)">有焦味 / 異音</button>
+            <button class="flow-btn" onclick="selectSymptom('intermittent', this)">時好時壞 (接觸不良)</button>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <h3>2. 可能性分析 (Probable Causes)</h3>
+            <h3>2. 可能性分析</h3>
         </div>
         <div id="analysisResult">
             <ul style="padding-left: 20px;">
                 <li><strong>加熱絲斷裂 (Heating Element Open)</strong> - 80% 機率</li>
-                <li><strong>溫度保險絲燒毀 (Thermal
+                <li><strong>溫度保險絲燒毀 (Thermal Fuse Blown)</strong> - 15% 機率</li>
+                <li><strong>檔位開關故障</strong> - 5% 機率</li>
+            </ul>
+            <p style="font-size:0.9rem; color:var(--accent)">建議檢測順序：保險絲 &rarr; 加熱絲 &rarr; 開關</p>
+        </div>
+    </div>
+
+    <div class="card full-width">
+        <div class="card-header">
+            <h3>3. 三用電表檢測 (輸入數值)</h3>
+            <span style="font-size:0.8rem; color:var(--text-muted)">請將電表轉至歐姆檔 (Ω)</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            
+            <div class="meter-group">
+                <label>A. 溫度保險絲 (Thermal Fuse)</label>
+                <input type="number" id="fuseInput" placeholder="輸入 Ω 數值" oninput="checkComponent('fuse')">
+                <div class="result-display" id="fuseResult">等待輸入...</div>
+                <small style="color:var(--text-muted)">正常：接近 0 Ω (導通)</small>
+            </div>
+
+            <div class="meter-group">
+                <label>B. 加熱絲 (Heating Element)</label>
+                <input type="number" id="heaterInput" placeholder="輸入 Ω 數值" oninput="checkComponent('heater')">
+                <div class="result-display" id="heaterResult">等待輸入...</div>
+                <small style="color:var(--text-muted)">正常：約 20-100 Ω</small>
+            </div>
+
+            <div class="meter-group">
+                <label>C. 開關接點 (Switch)</label>
+                <input type="number" id="switchInput" placeholder="輸入 Ω 數值" oninput="checkComponent('switch')">
+                <div class="result-display" id="switchResult">等待輸入...</div>
+                <small style="color:var(--text-muted)">熱風檔：應導通 (0 Ω)</small>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card full-width">
+        <div class="card-header">
+            <h3>4. 影音維修參考 (點擊觀看)</h3>
+            <span style="font-size:0.8rem; color:var(--text-muted)">連結將開啟新視窗</span>
+        </div>
+        <div class="video-grid">
+            
+            <a href="https://www.youtube.com/results?search_query=%E5%90%B9%E9%A2%A8%E6%A9%9F+%E6%9C%89%E9%A2%A8%E7%84%A1%E7%86%B1+%E7%B6%AD%E4%BF%AE" target="_blank" rel="noopener noreferrer" class="video-card">
+                <div class="play-icon">▶</div>
+                <div class="video-title">有風無熱 (中文)</div>
+                <div class="video-desc">搜尋「吹風機 有風無熱 維修」<br>確認通病維修案例</div>
+            </a>
+
+            <a href="https://www.youtube.com/results?search_query=hair+dryer+thermal+fuse+replacement" target="_blank" rel="noopener noreferrer" class="video-card">
+                <div class="play-icon">▶</div>
+                <div class="video-title">更換溫度保險絲 (英文)</div>
+                <div class="video-desc">搜尋 "Thermal Fuse Replacement"<br>學習如何使用壓接端子</div>
+            </a>
+
+            <a href="https://www.youtube.com/results?search_query=%E4%B8%89%E7%94%A8%E9%9B%BB%E8%A1%A8+%E6%B8%AC%E9%87%8F+%E9%9B%BB%E9%98%BB" target="_blank" rel="noopener noreferrer" class="video-card">
+                <div class="play-icon">▶</div>
+                <div class="video-title">三用電表教學 (基礎)</div>
+                <div class="video-desc">搜尋「三用電表 測量 電阻」<br>學習歐姆檔位判讀</div>
+            </a>
+
+            <a href="https://www.youtube.com/results?search_query=clean+hair+dryer+motor+hair" target="_blank" rel="noopener noreferrer" class="video-card">
+                <div class="play-icon">▶</div>
+                <div class="video-title">清理馬達毛髮</div>
+                <div class="video-desc">搜尋 "Clean Hair Dryer Motor"<br>拆卸扇葉清潔技巧</div>
+            </a>
+
+        </div>
+    </div>
+    
+     <div class="card">
+        <div class="card-header">
+            <h3>5. 電路簡圖</h3>
+        </div>
+        <div class="diagram">
+            <svg width="200" height="150" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="60" width="30" height="30" stroke="#3b82f6" fill="none" stroke-width="2"/>
+                <text x="22" y="80" font-size="10" fill="#3b82f6">Motor</text>
+                <line x1="50" y1="75" x2="80" y2="75" stroke="#9ca3af" stroke-width="2"/>
+                <path d="M80,75 Q90,55 100,75 T120,75 T140,75" stroke="#ef4444" fill="none" stroke-width="3"/>
+                <text x="100" y="50" font-size="10" fill="#ef4444">Heater</text>
+                <rect x="150" y="70" width="20" height="10" fill="#f59e0b"/>
+                <text x="145" y="95" font-size="10" fill="#f59e0b">T.Fuse</text>
+                <line x1="170" y1="75" x2="190" y2="75" stroke="#9ca3af" stroke-width="2"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>6. 維修建議 (自動生成)</h3>
+        </div>
+        <div id="actionPlan">
+            <p>請先在「步驟 1」選擇故障現象，並在「步驟 3」輸入電表數值。</p>
+        </div>
+    </div>
+
+    <div class="full-width warning-box">
+        <strong>⚠️ 安全警示：</strong> 請務必拔除電源插頭後再拆機。測試電阻時不可通電。
+    </div>
+
+</div>
+
+<script>
+    /**
+     * 修正版 JavaScript 邏輯
+     * 使用更安全的事件處理方式
+     */
+
+    // 1. 處理輸入框邏輯
+    function checkComponent(type) {
+        const input = document.getElementById(type + 'Input').value;
+        const display = document.getElementById(type + 'Result');
+        let val = parseFloat(input);
+        
+        // 清空處理
+        if (input === '') {
+            display.innerHTML = '等待輸入...';
+            display.className = 'result-display';
+            updateActionPlan();
+            return;
+        }
+
+        // 判斷邏輯
+        if (type === 'fuse' || type === 'switch') {
+            if (val < 5) {
+                display.innerHTML = '✅ 正常導通 (Pass)';
+                display.className = 'result-display status-ok';
+            } else {
+                display.innerHTML = '❌ 斷路/損壞 (Fail)';
+                display.className = 'result-display status-fail';
+            }
+        } else if (type === 'heater') {
+            if (val > 10 && val < 500) {
+                display.innerHTML = '✅ 正常 (Pass)';
+                display.className = 'result-display status-ok';
+            } else if (val <= 10) {
+                 display.innerHTML = '⚠️ 阻值過低/短路';
+                 display.className = 'result-display status-fail';
+            } else {
+                display.innerHTML = '❌ 斷路/燒毀 (Open)';
+                display.className = 'result-display status-fail';
+            }
+        }
+
+        updateActionPlan();
+    }
+
+    // 2. 處理症狀選擇按鈕 (修正了 event 問題)
+    function selectSymptom(symptom, btnElement) {
+        // 移除所有按鈕的 active 樣式
+        const buttons = document.querySelectorAll('.flow-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        // 將被點擊的按鈕設為 active
+        if(btnElement) {
+            btnElement.classList.add('active');
+        }
+
+        const analysis = document.getElementById('analysisResult');
+        const statusBadge = document.getElementById('systemStatus');
+        
+        // 更新分析文字
+        if (symptom === 'fan-no-heat') {
+            analysis.innerHTML = `
+                <ul style="padding-left: 20px;">
+                    <li><strong>加熱絲斷裂</strong> - 最常見 (80%)</li>
+                    <li><strong>溫度保險絲</strong> - 檢查是否開路 (15%)</li>
+                </ul>`;
+            statusBadge.innerText = "模式：有風無熱";
+            statusBadge.style.background = "#3b82f6";
+        } else if (symptom === 'no-power') {
+            analysis.innerHTML = `
+                <ul style="padding-left: 20px;">
+                    <li><strong>電源線斷裂</strong> - 檢查插頭根部</li>
+                    <li><strong>主開關故障</strong> - 內部積碳</li>
+                </ul>`;
+            statusBadge.innerText = "模式：完全不通電";
+            statusBadge.style.background = "#ef4444";
+        } else if (symptom === 'smell') {
+            analysis.innerHTML = `<p>請檢查入風口是否有頭髮捲入，或馬達軸心需清潔。</p>`;
+            statusBadge.innerText = "模式：異味/異音";
+            statusBadge.style.background = "#f59e0b";
+        } else {
+            analysis.innerHTML = `<p>可能是電源線接觸不良，請搖晃電源線測試。</p>`;
+            statusBadge.innerText = "模式：接觸不良";
+        }
+    }
+
+    // 3. 更新最終建議
+    function updateActionPlan() {
+        const fuseStatus = document.getElementById('fuseResult').innerText;
+        const heaterStatus = document.getElementById('heaterResult').innerText;
+        const switchStatus = document.getElementById('switchResult').innerText;
+        const planDiv = document.getElementById('actionPlan');
+
+        // 優先順序判斷
+        if (heaterStatus.includes('斷路')) {
+            planDiv.innerHTML = "<strong style='color:#ef4444; font-size:1.1rem;'>🔴 診斷結果：加熱絲燒毀</strong><br>建議：這是最常見故障。若是斷在接點處可嘗試壓接修復；若斷在線圈中間建議更換發熱架總成。";
+        } else if (fuseStatus.includes('斷路')) {
+            planDiv.innerHTML = "<strong style='color:#ef4444; font-size:1.1rem;'>🔴 診斷結果：溫度保險絲熔斷</strong><br>建議：更換同規格溫度保險絲（常見 100-150°C）。<br>⚠️ <strong>絕對不可焊接</strong>，必須使用壓接端子。";
+        } else if (heaterStatus.includes('阻值過低')) {
+             planDiv.innerHTML = "<strong style='color:#f59e0b;'>⚠️ 警示：加熱絲短路</strong><br>部分線圈碰觸在一起，這會導致風變非常燙且發紅，請檢查雲母片支架是否斷裂。";
+        } else if (heaterStatus.includes('正常') && fuseStatus.includes('正常')) {
+            if (switchStatus.includes('斷路')) {
+                planDiv.innerHTML = "<strong style='color:#ef4444;'>🔴 診斷結果：開關故障</strong><br>開關內部接點氧化，導致電流無法通過。建議使用接點清潔劑或更換開關。";
+            } else {
+                planDiv.innerHTML = "<strong style='color:#10b981;'>🟢 元件數值看似正常？</strong><br>如果測量都正常但還是沒熱風，請檢查：<br>1. 雙金屬片溫控開關（Bimetal）是否卡死在斷開狀態。<br>2. 內部配線接點是否有鬆脫。";
+            }
+        } else {
+            // 預設狀態
+            planDiv.innerHTML = "等待更多數據以進行判斷...";
+        }
+    }
+</script>
+
+</body>
+</html>
