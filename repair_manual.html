@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古風小白屋 - 家電維修數位手冊</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22; /* 零件/專業建議色 */
+            --fan-color: #3498db;
+            --cooker-color: #e74c3c;
+            --micro-color: #8e44ad;
+            --dryer-color: #2ecc71; /* 吹風機 - 綠色 */
+            --oven-color: #f1c40f; /* 烤箱 - 黃色 */
+            --bg-color: #f4f6f7;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "Segoe UI", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        /* 導覽列 */
+        nav {
+            background: var(--primary);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-header {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            overflow-x: auto;
+        }
+
+        .nav-item {
+            padding: 15px 10px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s;
+            flex-grow: 1;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 4px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .nav-item.active {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        /* Tab Active Colors */
+        .nav-item[data-target="fan"] { border-color: var(--fan-color); }
+        .nav-item[data-target="fan"].active { background: var(--fan-color); }
+
+        .nav-item[data-target="cooker"] { border-color: var(--cooker-color); }
+        .nav-item[data-target="cooker"].active { background: var(--cooker-color); }
+
+        .nav-item[data-target="microwave"] { border-color: var(--micro-color); }
+        .nav-item[data-target="microwave"].active { background: var(--micro-color); }
+
+        .nav-item[data-target="dryer"] { border-color: var(--dryer-color); }
+        .nav-item[data-target="dryer"].active { background: var(--dryer-color); }
+
+        .nav-item[data-target="oven"] { border-color: var(--oven-color); }
+        .nav-item[data-target="oven"].active { background: var(--oven-color); }
+
+        .nav-item[data-target="specs"] { border-color: var(--accent); }
+        .nav-item[data-target="specs"].active { background: var(--accent); }
+
+
+        /* 內容區塊 */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 卡片與故障排除樣式 */
+        .trouble-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 5px solid #ccc;
+        }
+
+        .fan-card { border-left-color: var(--fan-color); }
+        .cooker-card { border-left-color: var(--cooker-color); }
+        .micro-card { border-left-color: var(--micro-color); }
+        .dryer-card { border-left-color: var(--dryer-color); }
+        .oven-card { border-left-color: var(--oven-color); }
+
+
+        h2 { margin-top: 0; }
+        
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            color: white;
+            margin-bottom: 10px;
+            background: #95a5a6;
+        }
+        .tag.hot { background: #e74c3c; }
+        .tag.mech { background: #3498db; }
+        .tag.elec { background: #f39c12; }
+
+        /* 圖片與影片區塊 */
+        .media-container {
+            margin-top: 15px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .img-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+            border: 2px dashed #999;
+            margin-bottom: 10px;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        
+        .img-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 表格樣式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-top: 10px;
+        }
+        
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* 警示框 */
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* IT 註解風格 */
+        .it-note {
+            font-family: 'Consolas', monospace;
+            background: #2d3436;
+            color: #00cec9;
+            padding: 10px;
+            font-size: 0.9em;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-header">
+        <h1 style="margin:0; font-size: 1.2em;">古風小白屋 維修志工手冊 v2.0</h1>
+    </div>
+    <ul class="nav-tabs">
+        <li class="nav-item active" data-target="fan">🌀 電風扇</li>
+        <li class="nav-item" data-target="cooker">🍚 電鍋</li>
+        <li class="nav-item" data-target="microwave">⚡ 微波爐</li>
+        <li class="nav-item" data-target="dryer">💨 吹風機</li>
+        <li class="nav-item" data-target="oven">🍞 烤箱</li>
+        <li class="nav-item" data-target="specs">🛠️ 零件規格</li>
+    </ul>
+</nav>
+
+<div class="container">
+
+    <div id="fan" class="section active">
+        <div class="warning-box">
+            💡 維修前請務必拔除插頭。測試運轉時請勿觸摸扇葉。
+        </div>
+
+        <div class="trouble-card fan-card">
+            <h2>1. 馬達有「嗡嗡聲」但不轉</h2>
+            <span class="tag elec">啟動電容</span> <span class="tag mech">軸承卡死</span>
+            <p><strong>判斷邏輯：</strong></p>
+            <ul>
+                <li>斷電手撥扇葉：
+                    <ul>
+                        <li><strong>很緊/卡住</strong> ➝ 軸承缺油或黏死 (需清潔上油)。</li>
+                        <li><strong>很順暢</strong> ➝ 啟動電容容量不足 (需更換)。</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <div class="media-container">
+                <p><strong>📺 參考影片：電風扇換電容教學</strong></p>
+                <div class="video-wrapper">
+                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:#000; color:#fff; display:flex; justify-content:center; align-items:center; opacity:0.8;">
+                        (建議嵌入影片：宅爸詹姆士 - 電風扇不轉維修)
+                    </div>
+                </div>
+                
+                <div class="it-note">
+                    // IT 筆記：電容就像 RAM，衰退了系統(馬達)就跑不動。
+                    <br>規格注意：14-16吋扇多為 2.0uF ~ 2.5uF。箱型扇可能達 3uF-4uF。
+                </div>
+            </div>
+        </div>
+
+        <div class="trouble-card fan-card">
+            <h2>2. 完全無聲、無反應</h2>
+            <span class="tag elec">斷路</span> <span class="tag elec">溫度保險絲</span>
+            <p><strong>檢測步驟：</strong></p>
+            <ol>
+                <li>使用三用電表測量插頭兩端阻值 (Ω)。若為無限大 (OL)，代表斷路。</li>
+                <li>拆開馬達後蓋，尋找<strong>溫度保險絲</strong>。通常包在白色玻璃纖維管內。</li>
+                <li>量測保險絲兩端，若不通則需更換。</li>
+            </ol>
+            
+            <div class="media-container">
+                <p><strong>📸 零件位置示意：</strong></p>
+                <div class="img-placeholder">
+                    <img src="https://placehold.co/600x200/2c3e50/FFF?text=示意圖：馬達線圈上的白色保險絲套管 (115°C/130°C 2A)" alt="保險絲位置">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cooker" class="section">
+        <div class="trouble-card cooker-card">
+            <h2>1. 加熱燈不亮 / 不過電</h2>
+            <span class="tag elec">溫度保險絲</span> <span class="tag mech">電源線</span>
+            <p><strong>大同電鍋常見結構：</strong>電源從底部進入後，會先經過一條<strong>溫度保險絲</strong>。這是最常壞的零件。</p>
+            <div class="media-container">
+                <div class="img-placeholder">
+                    <img src="https://placehold.co/600x200/e74c3c/FFF?text=示意圖：電鍋底部+溫度保險絲位置" alt="電鍋底部">
+                </div>
+                <div class="it-note">
+                    // Debug：電鍋保險絲通常用螺絲鎖附或壓接，不可焊接(因為鍋底高溫會融錫)。
+                </div>
+            </div>
+        </div>
+
+        <div class="trouble-card cooker-card">
+            <h2>2. 飯煮不熟就跳起來 (太早跳)</h2>
+            <span class="tag mech">磁鋼限溫器</span>
+            <p><strong>原理：</strong>中間的感溫磁鋼 (Magnetic Thermostat) 磁力衰退，導致未達居里溫度 (約130°C) 就彈開。</p>
+            <p><strong>解法：</strong>更換中板磁鋼組 (拆下底部大螺帽即可更換)。</p>
+        </div>
+    </div>
+
+    <div id="microwave" class="section">
+        <div class="danger-box">
+            ☠️ 高壓危險警告 ☠️<br>
+            微波爐維修前 <strong>必須拔插頭</strong> 並對 <strong>高壓電容放電</strong>。<br>
+            電壓高達 4000V，即使斷電仍可能有致命電荷。
+        </div>
+
+        <div class="trouble-card micro-card">
+            <h2>1. 門關了但燈不亮/不運轉</h2>
+            <span class="tag elec">微動開關</span> <span class="tag elec">主保險絲</span>
+            <p><strong>微動開關邏輯 (Door Interlock)：</strong>微波爐通常有 3 個微動開關。若門勾磨損或開關接點積碳，機器會鎖死。</p>
+            <div class="it-note">
+                // Logic Gate: 所有門開關必須正確導通/斷路，HV電路才會開啟。
+            </div>
+        </div>
+
+        <div class="trouble-card micro-card">
+            <h2>2. 有運轉聲音但不熱</h2>
+            <span class="tag elec">高壓保險絲</span> <span class="tag elec">磁控管</span>
+            <p><strong>檢查順序：</strong></p>
+            <ol>
+                <li>檢查高壓變壓器與電容之間的「高壓保險絲」(通常在白色塑膠殼內)。</li>
+                <li>若保險絲正常，檢查高壓二極體是否擊穿。</li>
+            </ol>
+            <div class="media-container">
+                <div class="img-placeholder">
+                    <img src="https://placehold.co/600x200/8e44ad/FFF?text=示意圖：高壓保險絲(白色管)與電容" alt="高壓部件">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="dryer" class="section">
+        <div class="warning-box">
+            💡 吹風機故障多為線路/保險絲問題，檢查時需注意機身進風口濾網是否堵塞。
+        </div>
+
+        <div class="trouble-card dryer-card">
+            <h2>1. 完全不過電/不運轉</h2>
+            <span class="tag elec">電源線</span> <span class="tag elec">電源插頭</span>
+            <p><strong>判斷邏輯：</strong>吹風機電源線常因收納不當（彎折）導致內部斷裂。</p>
+            <p><strong>檢測：</strong>用三用電表測量線材兩端是否有導通。若無，沿著線材輕搖，看電表讀數是否跳動 (代表線材接觸不良)。</p>
+        </div>
+
+        <div class="trouble-card dryer-card">
+            <h2>2. 風扇轉動，但不加熱</h2>
+            <span class="tag hot">加熱線圈</span> <span class="tag elec">過熱保護</span>
+            <p><strong>檢查順序：</strong></p>
+            <ol>
+                <li>檢查**過熱保護用溫度保險絲** (通常在加熱線圈附近)。</li>
+                <li>用電表量測加熱線圈 (鎳鉻絲) 是否斷路 (若阻值無限大則斷路，需更換加熱總成)。</li>
+            </ol>
+            <div class="it-note">
+                // 吹風機保險絲常見規格：150°C ~ 190°C，電流 10A 以上。
+            </div>
+        </div>
+    </div>
+    
+    <div id="oven" class="section">
+        <div class="warning-box">
+            💡 烤箱是高功率加熱器，需特別注意發熱管的完整性及清潔。
+        </div>
+
+        <div class="trouble-card oven-card">
+            <h2>1. 完全不加熱/不啟動</h2>
+            <span class="tag mech">定時器</span> <span class="tag elec">加熱管</span>
+            <p><strong>判斷邏輯：</strong></p>
+            <ol>
+                <li>**檢查定時器 (Timer)：** 機械式烤箱的定時器是最常見的故障點 (內部接點氧化或機械卡死)。短接定時器輸入/輸出端測試加熱功能是否恢復。</li>
+                <li>**檢查加熱管：** 用電表量測上下發熱管的阻值 (Ω)。若阻值無限大，則該發熱管燒毀。</li>
+            </ol>
+        </div>
+
+        <div class="trouble-card oven-card">
+            <h2>2. 溫度控制失常 (過熱或不足)</h2>
+            <span class="tag hot">溫控器</span>
+            <p><strong>原理：</strong>由溫控器 (Thermostat) 控制加熱迴路的通斷。</p>
+            <p><strong>解法：</strong>溫控器是不可維修零件。若溫度失準，需整組更換。更換時注意毛細管感溫頭需放在原位。</p>
+        </div>
+    </div>
+
+
+    <div id="specs" class="section">
+        <h2>🛠️ 常用維修零件規格表</h2>
+        <p>小白屋志工採購參考用 (數據已修正)</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>分類</th>
+                    <th>零件</th>
+                    <th>常見規格</th>
+                    <th>備註 (IT 觀點)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="2" style="background:#eaf2f8;">🌀 電風扇</td>
+                    <td>啟動電容 (CBB61)</td>
+                    <td>
+                        <strong>1.5uF ~ 4.0uF</strong> (450VAC)<br>
+                    </td>
+                    <td>容值需盡量與原廠一致。耐壓只能高不能低。</td>
+                </tr>
+                <tr>
+                    <td>溫度保險絲</td>
+                    <td><strong>115°C / 130°C</strong> (2A / 250V)</td>
+                    <td>位於馬達線圈內。焊接時須用尖嘴鉗散熱。</td>
+                </tr>
+
+                <tr>
+                    <td rowspan="2" style="background:#f9e5e5;">🍚 電鍋類</td>
+                    <td>溫度保險絲</td>
+                    <td>135°C ~ 167°C (10A / 250V)</td>
+                    <td>位於鍋底。必須使用壓接或螺絲固定，不可焊接。</td>
+                </tr>
+                <tr>
+                    <td>保溫電熱片</td>
+                    <td>約 40W ~ 50W (阻值約 1.2kΩ)</td>
+                    <td></td>
+                </tr>
+                
+                <tr>
+                    <td rowspan="2" style="background:#f1e9f7;">⚡ 微波爐類</td>
+                    <td>高壓保險絲</td>
+                    <td>0.75A ~ 0.85A (5000V / 5KV)</td>
+                    <td>位於高壓電路。一般保險絲無法替代。</td>
+                </tr>
+                <tr>
+                    <td>微動開關</td>
+                    <td>16A / 250V (NO / NC)</td>
+                    <td>需確認開關類型 (常開或常閉)。</td>
+                </tr>
+
+                <tr>
+                    <td rowspan="2" style="background:#e8f5e9;">💨 吹風機</td>
+                    <td>溫度保險絲</td>
+                    <td>150°C ~ 190°C (10A ~ 15A)</td>
+                    <td>用於過熱保護，位於加熱線圈旁。</td>
+                </tr>
+                <tr>
+                    <td>加熱線圈</td>
+                    <td>阻值 < 50Ω (視功率)</td>
+                    <td>若線圈斷裂，阻值無限大。</td>
+                </tr>
+
+                <tr>
+                    <td rowspan="2" style="background:#fcf8e3;">🍞 烤箱類</td>
+                    <td>發熱管 (上/下)</td>
+                    <td>阻值約 10Ω ~ 40Ω (視功率)</td>
+                    <td>可用電表確認是否斷路。</td>
+                </tr>
+                <tr>
+                    <td>定時器</td>
+                    <td>機械式 (通常不可修，需更換總成)</td>
+                    <td>若聽到卡卡聲但無法定時，多為定時器故障。</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.section');
+
+        // Initial setup
+        sections.forEach(section => section.style.display = 'none');
+        document.getElementById('fan').style.display = 'block';
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const target = this.getAttribute('data-target');
+                
+                // Remove active class from all nav items
+                navItems.forEach(i => i.classList.remove('active'));
+                
+                // Hide all sections
+                sections.forEach(section => section.style.display = 'none');
+                
+                // Show the target section and set active class
+                const targetSection = document.getElementById(target);
+                if (targetSection) {
+                    // Trigger fade-in animation
+                    targetSection.classList.remove('active');
+                    void targetSection.offsetWidth; // Reflow
+                    targetSection.classList.add('active');
+                    targetSection.style.display = 'block';
+                }
+                
+                this.classList.add('active');
+            });
+        });
+
+        // Add active class to the initial section's nav item
+        document.querySelector('.nav-item[data-target="fan"]').classList.add('active');
+    });
+</script>
+
+</body>
+</html>
