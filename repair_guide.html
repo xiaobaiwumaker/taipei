@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古風小白屋 - 智慧維修診斷樹</title>
+    <style>
+        :root {
+            --primary: #2980b9;
+            --secondary: #8e44ad;
+            --success: #27ae60;
+            --danger: #c0392b;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 700px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        header {
+            background: var(--dark);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            background: #bdc3c7;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .tab.active {
+            background: white;
+            border-top: 4px solid var(--primary);
+        }
+
+        .tab:nth-child(2).active {
+            border-top-color: var(--secondary);
+        }
+
+        .content-area {
+            padding: 30px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .question-box h2 {
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+        }
+
+        .btn-yes { background: var(--success); color: white; }
+        .btn-no { background: var(--danger); color: white; }
+        .btn-reset { background: var(--dark); color: white; margin-top: 20px;}
+
+        button:hover { opacity: 0.9; transform: scale(1.02); }
+
+        .result-box {
+            background: #f9f9f9;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .result-box h3 { color: var(--primary); margin-top: 0;}
+        
+        .diagram-note {
+            font-family: 'Courier New', monospace;
+            background: #333;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-size: 0.85em;
+            white-space: pre-wrap;
+        }
+
+        .safety-warning {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border: 1px solid #ef9a9a;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            display: none; /* Hidden by default */
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>家電維修診斷樹</h1>
+        <p>古風小白屋志工專用工具 v1.0</p>
+    </header>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('ricecooker')">🍚 電鍋維修</div>
+        <div class="tab" onclick="switchTab('microwave')">⚡ 微波爐維修 (高壓注意)</div>
+    </div>
+
+    <div class="content-area">
+        <div id="safetyBanner" class="safety-warning">
+            ⚠️ <strong>高壓危險：</strong> 微波爐維修前請務必拔除插頭，並對「高壓電容」進行放電（使用尖嘴鉗短路電容兩極）。若無把握請勿觸碰變壓器後端電路。
+        </div>
+        <div id="dynamicContent" class="fade-in">
+            </div>
+    </div>
+</div>
+
+<script>
+    // Data Structure for Logic Trees
+    const logicData = {
+        ricecooker: {
+            start: {
+                q: "插上電源，按下開關，加熱燈(紅燈)會亮嗎？",
+                yes: "light_on",
+                no: "light_off"
+            },
+            light_off: {
+                q: "測量電源線兩端是否導通？(三用電表)",
+                yes: "check_fuse",
+                no: "fix_cord"
+            },
+            fix_cord: {
+                result: "更換電源線",
+                detail: "這是最簡單的問題，通常是插頭內部斷裂或線材老化。",
+                diagram: "插頭 [斷路 X] --- 電鍋"
+            },
+            check_fuse: {
+                result: "檢查溫度保險絲",
+                detail: "拆開底蓋，尋找被白色玻璃纖維套管包住的元件。若量測為斷路，請更換 (通常規格：10A 250V, 130~150°C)。",
+                diagram: "AC --- [保險絲] --- 開關"
+            },
+            light_on: {
+                q: "燈亮，但是鍋子完全不熱？",
+                yes: "check_heater",
+                no: "cooking_issue"
+            },
+            check_heater: {
+                result: "檢查電熱片或主開關接點",
+                detail: "1. 檢查主開關接點是否積碳氧化導致接觸不良 (用砂紙打磨)。\n2. 量測電熱片阻值，若為無窮大則電熱盤燒毀 (建議報廢)。",
+                diagram: "開關 [X] --- 電熱片"
+            },
+            cooking_issue: {
+                q: "飯煮不熟就跳起來 (太早跳)，或是煮焦了還不跳？",
+                yes: "sensor_issue",
+                no: "warm_issue"
+            },
+            sensor_issue: {
+                result: "更換/調整磁鋼限溫器",
+                detail: "1. 太早跳：磁鋼磁力衰退，需更換中板磁鋼組。\n2. 不跳：連桿機構卡死或異物沾黏，清潔活動部位。",
+                diagram: "內鍋溫度 > 100°C -> 磁鋼失磁 -> 彈簧彈開"
+            },
+            warm_issue: {
+                result: "檢查保溫片",
+                detail: "若主加熱正常但無法保溫，檢查並聯的保溫電熱片或保溫電阻是否斷路。",
+                diagram: "主開關(斷) -> 電流走保溫路徑"
+            }
+        },
+        microwave: {
+            start: {
+                q: "插電後，面板顯示燈有亮嗎？",
+                yes: "panel_on",
+                no: "power_dead"
+            },
+            power_dead: {
+                result: "檢查主保險絲 (低壓側)",
+                detail: "位於電源線入口處的玻璃管保險絲 (通常 10A-15A)。若燒黑，檢查是否有門開關短路或元件短路。",
+                diagram: "AC --- [FUSE] --- 電路板"
+            },
+            panel_on: {
+                q: "設定時間啟動後，燈會亮、盤會轉，但「完全不熱」？",
+                yes: "hv_check",
+                no: "weird_noise"
+            },
+            weird_noise: {
+                q: "運轉時有異常大的「轟轟」聲或打火花？",
+                yes: "sparking",
+                no: "door_issue"
+            },
+            door_issue: {
+                result: "檢查門微動開關 (Interlocks)",
+                detail: "最常見故障！微波爐有3個微動開關 (主鎖、監控鎖、感應鎖)。若接點氧化或塑膠卡榫磨損，微波爐會鎖死不啟動。請一一測量通斷。",
+                diagram: "門勾 -> [開關A] + [開關B] -> 導通"
+            },
+            sparking: {
+                result: "檢查雲母片與磁控管槍頭",
+                detail: "1. 雲母片(爐內右側銀色片)是否燒焦油汙？(更換)\n2. 磁控管發射頭是否燒融？(需更換磁控管)",
+                diagram: "微波出口 -> [雲母片] -> 爐腔"
+            },
+            hv_check: {
+                result: "檢查高壓側 (危險區)",
+                detail: "1. 高壓保險絲 (白色塑膠殼內) 是否燒斷？\n2. 高壓二極體是否擊穿？\n3. 高壓電容是否失效？\n4. 磁控管本身故障。\n**務必先放電再檢測！**",
+                diagram: "變壓器 -> [高壓保險絲] -> [電容/二極體] -> 磁控管"
+            }
+        }
+    };
+
+    let currentTab = 'ricecooker';
+    let currentNode = 'start';
+
+    function switchTab(tab) {
+        currentTab = tab;
+        currentNode = 'start';
+        
+        // UI Update
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach((t, index) => {
+            if ((index === 0 && tab === 'ricecooker') || (index === 1 && tab === 'microwave')) {
+                t.classList.add('active');
+            }
+        });
+
+        // Safety Warning Toggle
+        const safetyBanner = document.getElementById('safetyBanner');
+        if (tab === 'microwave') {
+            safetyBanner.style.display = 'block';
+            document.documentElement.style.setProperty('--primary', '#8e44ad'); // Purple for microwave
+        } else {
+            safetyBanner.style.display = 'none';
+            document.documentElement.style.setProperty('--primary', '#2980b9'); // Blue for rice cooker
+        }
+
+        render();
+    }
+
+    function render() {
+        const container = document.getElementById('dynamicContent');
+        const data = logicData[currentTab][currentNode];
+        
+        // Remove animation class to re-trigger it
+        container.classList.remove('fade-in');
+        void container.offsetWidth; // trigger reflow
+        container.classList.add('fade-in');
+
+        if (data.q) {
+            // Question State
+            container.innerHTML = `
+                <div class="question-box">
+                    <h2>🤔 ${data.q}</h2>
+                    <div class="btn-group">
+                        <button class="btn-yes" onclick="next('${data.yes}')">是 (Yes)</button>
+                        <button class="btn-no" onclick="next('${data.no}')">否 (No)</button>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Result State
+            container.innerHTML = `
+                <div class="result-box">
+                    <h3>🔧 診斷結果：${data.result}</h3>
+                    <p>${data.detail.replace(/\n/g, '<br>')}</p>
+                    ${data.diagram ? `<div class="diagram-note">電路示意：\n${data.diagram}</div>` : ''}
+                </div>
+                <button class="btn-reset" onclick="reset()">🔄 重新診斷</button>
+            `;
+        }
+    }
+
+    function next(nextNodeKey) {
+        currentNode = nextNodeKey;
+        render();
+    }
+
+    function reset() {
+        currentNode = 'start';
+        render();
+    }
+
+    // Initialize
+    render();
+
+</script>
+
+</body>
+</html>
