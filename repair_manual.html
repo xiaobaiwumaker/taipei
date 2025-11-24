@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>古風小白屋 - 家電維修數位手冊 (專業詳盡版)</title>
+    <title>古風小白屋 - 家電維修數位手冊 (V4.0 終極專業版)</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -25,7 +25,7 @@
             padding-bottom: 50px;
         }
 
-        /* 導覽列 */
+        /* 導覽列 (外部) */
         nav {
             background: var(--primary);
             color: white;
@@ -72,7 +72,7 @@
         /* Tab Active Colors */
         .nav-item[data-target="fan"] { border-color: var(--fan-color); }
         .nav-item[data-target="fan"].active { background: var(--fan-color); }
-
+        /* ... (其他 Tab 顏色保持不變) ... */
         .nav-item[data-target="cooker"] { border-color: var(--cooker-color); }
         .nav-item[data-target="cooker"].active { background: var(--cooker-color); }
 
@@ -87,7 +87,6 @@
 
         .nav-item[data-target="specs"] { border-color: var(--accent); }
         .nav-item[data-target="specs"].active { background: var(--accent); }
-
 
         /* 內容區塊 */
         .container {
@@ -110,7 +109,39 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 卡片與故障排除樣式 */
+        /* 風扇內部 Sub-Tabs Style */
+        .fan-sub-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--fan-color);
+            margin-bottom: 20px;
+        }
+        .fan-sub-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            background: #f4f4f4;
+            transition: 0.2s;
+            margin-right: 5px;
+        }
+        .fan-sub-item.active {
+            background: var(--fan-color);
+            color: white;
+            border-color: var(--fan-color);
+            border-bottom: 2px solid var(--fan-color); /* Overlap the main border */
+            position: relative;
+            bottom: -2px;
+        }
+        .fan-sub-content {
+            display: none;
+        }
+        .fan-sub-content.active {
+            display: block;
+        }
+        /* ... (其他通用樣式保持不變) ... */
+
         .trouble-card {
             background: white;
             border-radius: 8px;
@@ -121,6 +152,7 @@
         }
 
         .fan-card { border-left-color: var(--fan-color); }
+        /* ... (其他卡片顏色保持不變) ... */
         .cooker-card { border-left-color: var(--cooker-color); }
         .micro-card { border-left-color: var(--micro-color); }
         .dryer-card { border-left-color: var(--dryer-color); }
@@ -142,7 +174,6 @@
         .tag.mech { background: #3498db; }
         .tag.elec { background: #f39c12; }
 
-        /* 圖片與影片區塊 - 修正為純文字說明 */
         .media-container {
             margin-top: 15px;
             background: #f9f9f9;
@@ -167,64 +198,7 @@
             box-sizing: border-box;
             font-size: 0.9em;
         }
-        
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 */
-            height: 0;
-            overflow: hidden;
-            border-radius: 8px;
-        }
 
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* 表格樣式 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            margin-top: 10px;
-        }
-        
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        
-        th {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        /* 警示框 */
-        .warning-box {
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
-            color: #856404;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .danger-box {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        /* IT 註解風格 */
         .it-note {
             font-family: 'Consolas', monospace;
             background: #2d3436;
@@ -256,10 +230,10 @@
 
 <nav>
     <div class="nav-header">
-        <h1 style="margin:0; font-size: 1.2em;">古風小白屋 維修志工手冊 v3.0 (專業詳盡版)</h1>
+        <h1 style="margin:0; font-size: 1.2em;">古風小白屋 維修志工手冊 v4.0 (終極專業版)</h1>
     </div>
     <ul class="nav-tabs">
-        <li class="nav-item active" data-target="fan">🌀 電風扇</li>
+        <li class="nav-item active" data-target="fan">🌀 電風扇 (AC/DC)</li>
         <li class="nav-item" data-target="cooker">🍚 電鍋</li>
         <li class="nav-item" data-target="microwave">⚡ 微波爐</li>
         <li class="nav-item" data-target="dryer">💨 吹風機</li>
@@ -272,66 +246,113 @@
 
     <div id="fan" class="section active">
         <div class="warning-box">
-            💡 維修前請務必拔除插頭。測試運轉時請勿觸摸扇葉。
+            💡 維修前請務必拔除插頭。診斷 AC/DC 風扇是兩種不同的電子/機電架構。
         </div>
 
-        <div class="trouble-card fan-card">
-            <h2>1. 馬達有「嗡嗡聲」但不轉</h2>
-            <span class="tag elec">啟動電容</span> <span class="tag mech">軸承卡死</span>
-            
-            <div class="tech-detail">
-                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
-                <p><strong>IT 類比：</strong> 啟動電容 (CBB61) 就像 BIOS Battery，容量衰退後無法提供足夠啟動脈衝 (Starting Torque)。</p>
-                <p><strong>🛠️ 診斷：</strong></p>
-                <ul>
-                    <li><strong>電容：</strong> 使用電容表 (Capacitance Meter) 測量容值。若實際值低於標稱值 20% 以上，必須更換。</li>
-                    <li><strong>線圈：</strong> 測量馬達繞組 (低速/中速/高速線) 的直流電阻 (Ω)。</li>
-                </ul>
-                <div class="it-note">
-                    // 典型線圈電阻 (Ω):<br>
-                    // 低速線: 約 300Ω ~ 400Ω (最大阻值)<br>
-                    // 高速線: 約 100Ω ~ 150Ω (最小阻值)<br>
-                    // 若測量為 OL (Open Loop)，代表線圈或保險絲燒斷。
-                </div>
-            </div>
-            
-            <div class="media-container">
-                <p><strong>📺 參考影片：電風扇換電容教學</strong></p>
-                <div class="video-wrapper">
-                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:#000; color:#fff; display:flex; justify-content:center; align-items:center; opacity:0.8;">
-                        (請替換此處為 Youtube 影片 iframe：宅爸詹姆士 - 電風扇不轉維修)
+        <div class="fan-sub-tabs">
+            <div class="fan-sub-item active" data-sub-target="ac-fan-content">傳統 AC 風扇 (感應馬達)</div>
+            <div class="fan-sub-item" data-sub-target="dc-fan-content">電子 DC 風扇 (變頻/BLDC)</div>
+        </div>
+        
+        <div id="ac-fan-content" class="fan-sub-content active">
+
+            <div class="trouble-card fan-card">
+                <h2>1. AC 風扇：完全無聲、無反應</h2>
+                <span class="tag elec">電線斷線</span> <span class="tag elec">開關故障</span> <span class="tag elec">保險絲燒毀</span>
+                
+                <div class="tech-detail">
+                    <h3>📐 技術細節與診斷點 (線路追蹤)</h3>
+                    <p><strong>IT 類比：</strong> 這是 Layer 1/2 (物理層/資料連結層) 故障，必須依序檢查物理介面。</p>
+                    <p><strong>🛠️ 診斷步驟：</strong></p>
+                    <ol>
+                        <li>**電源線：** 用電表測量插頭兩端至機身內部接線板是否導通 (應為 $0\Omega$ 附近)。</li>
+                        <li>**開關總成：** 拆下開關，在各檔位 (1/2/3) 測量輸入端與對應輸出端之間的導通性。若某一檔位 OL，則開關需更換。</li>
+                        <li>**溫度保險絲：** 若前兩項正常，故障點必定在馬達內的溫度保險絲 (OL)。</li>
+                    </ol>
+                    <div class="it-note">
+                        // 診斷流程: <br>
+                        // Power Cord(0Ω) -> Switch -> [FUSE] -> Winding(Ω)
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="trouble-card fan-card">
-            <h2>2. 完全無聲、無反應</h2>
-            <span class="tag elec">斷路</span> <span class="tag elec">溫度保險絲</span>
-            
-            <div class="tech-detail">
-                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
-                <p><strong>IT 類比：</strong> 溫度保險絲 (Thermal Fuse) 就像硬體層的 Watchdog Timer，溫度過高會強制斷電 (Hard Reset)。</p>
-                <p><strong>🛠️ 診斷：</strong></p>
-                <ul>
-                    <li><strong>AC 輸入：</strong> 測量插頭兩端，應為繞組線圈的最小電阻 (高速檔)。若為 OL，追查斷路點。</li>
-                    <li><strong>保險絲：</strong> 需拆開線圈尋找保險絲。測量其兩端，若為 OL 則更換。</li>
-                </ul>
-                <div class="it-note">
-                    // 簡化電路流程:<br>
-                    // AC -> FUSE -> TIMER -> (L/M/H) WINDINGS -> AC
+            <div class="trouble-card fan-card">
+                <h2>2. AC 風扇：有「嗡嗡聲」或轉速極慢</h2>
+                <span class="tag elec">電容老化</span> <span class="tag mech">軸承卡死</span> <span class="tag elec">線圈老化</span>
+                
+                <div class="tech-detail">
+                    <h3>📐 技術細節與診斷點 (電氣特性)</h3>
+                    <p><strong>IT 類比：</strong> 電容容量不足就像系統記憶體不足，無法啟動高負載程式 (馬達)。線圈老化就像 CPU 核心出現損壞。</p>
+                    <p><strong>🛠️ 診斷步驟：</strong></p>
+                    <ul>
+                        <li>**電容老化：** 使用電容表測量。若 2.0uF 測得 1.5uF (衰減 $25\%$)，必須更換。</li>
+                        <li>**線圈老化/斷線：** 測量繞組電阻。若各檔位電阻值比標稱值（例如低速 $350\Omega$）高出太多或有明顯異味，可能為線圈老化或匝間短路。</li>
+                    </ul>
+                    <div class="it-note">
+                        // 預期電阻關係: R(Low) > R(Med) > R(High)<br>
+                        // 若 R(High)異常高或低，可能匝間短路，建議不修。
+                    </div>
                 </div>
             </div>
             
-            <div class="media-container">
-                <p><strong>📸 零件位置示意：</strong></p>
-                <div class="img-placeholder">
-                    📸 **請替換此處為您的實體照片：**<br>馬達線圈上包覆著白色玻璃纖維管的「溫度保險絲」位置。
+            <div class="trouble-card fan-card">
+                <h2>3. AC 風扇：運轉有「異音」或「卡頓」</h2>
+                <span class="tag mech">軸承</span> <span class="tag mech">擺頭機構</span>
+                
+                <div class="tech-detail">
+                    <h3>📐 技術細節與診斷點 (機械潤滑)</h3>
+                    <p><strong>IT 類比：</strong> 軸承 (Bearing) 就像風扇的液壓軸，長期缺乏潤滑導致摩擦力過大 (高延遲/卡頓)。</p>
+                    <p><strong>🛠️ 診斷：</strong></p>
+                    <ul>
+                        <li>**潤滑：** 清潔前後軸承 (Bushings) 後，使用 **縫紉機油 (低黏度)** 或 **工業潤滑油**。**嚴禁使用 WD-40** 作為長期潤滑劑，它只適用於清潔。</li>
+                        <li>**擺頭：** 檢查擺頭馬達或齒輪箱是否卡頓或缺油。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="dc-fan-content" class="fan-sub-content">
+            <div class="danger-box">
+                🚨 DC 風扇：高階電子電路複雜，故障多為驅動板或電源供應器失效。
+            </div>
+
+            <div class="trouble-card fan-card">
+                <h2>1. DC 風扇：完全無電或指示燈閃爍</h2>
+                <span class="tag elec">電源供應器</span> <span class="tag elec">主電容</span> <span class="tag elec">驅動板短路</span>
+                
+                <div class="tech-detail">
+                    <h3>📐 技術細節與診斷點 (DC 電源與控制板)</h3>
+                    <p><strong>IT 類比：</strong> 電源供應器 (Adapter) 是外部 Power Source。主電路板 (Driver Board) 則是 CPU/Motherboard，通常是故障的核心。</p>
+                    <p><strong>🛠️ 診斷步驟：</strong></p>
+                    <ol>
+                        <li>**電源適配器：** 測量輸出電壓 (通常為 12V 或 24V DC)。若無輸出或輸出電壓不穩，更換電源。</li>
+                        <li>**驅動板輸入：** 測量 12V/24V 是否穩定送達驅動板上的主濾波電容。</li>
+                        <li>**檢查短路：** 檢查驅動板上的功率元件 (如 MOSFET/IGBT) 是否有短路現象 (Drain-Source 測量為 $0\Omega$)。</li>
+                    </ol>
+                    <div class="it-note">
+                        // 典型 DC 風扇架構: <br>
+                        // AC -> ADAPTER (AC/DC) -> [Driver Board (MCU/FETs)] -> BLDC Motor
+                    </div>
+                </div>
+            </div>
+
+            <div class="trouble-card fan-card">
+                <h2>2. DC 風扇：轉速不穩、間歇性啟動</h2>
+                <span class="tag elec">霍爾傳感器</span> <span class="tag elec">控制訊號</span>
+                
+                <div class="tech-detail">
+                    <h3>📐 技術細節與診斷點 (BLDC 控制)</h3>
+                    <p><strong>IT 類比：</strong> 霍爾傳感器 (Hall Sensor) 就像馬達的定位/回饋系統，用於控制 FET 換相。故障會導致馬達無法同步 (Synchronization failure)。</p>
+                    <p><strong>🛠️ 診斷：</strong></p>
+                    <ul>
+                        <li>**霍爾訊號：** 需要示波器觀察三相 (U/V/W) 或霍爾感應線 (通常 3 條) 的訊號輸出。</li>
+                        <li>**線圈：** BLDC 三相線圈電阻很低，通常在 $5\Omega$ 至 $10\Omega$ 之間。若任一相電阻差異過大或 OL，則馬達損壞。</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <div id="cooker" class="section">
         <div class="trouble-card cooker-card">
             <h2>1. 加熱燈不亮 / 不過電</h2>
@@ -343,7 +364,7 @@
                 <p><strong>🛠️ 診斷：</strong></p>
                 <ul>
                     <li><strong>主加熱片：</strong> 700W~1000W 電鍋，主加熱片電阻應在 $15\Omega$ 至 $20\Omega$ 之間。若為 OL，加熱片燒毀。</li>
-                    <li><strong>保溫電路：</strong> 保溫電阻與保溫片約為 $1.2k\Omega$ (40W~50W)。</li>
+                    <li><strong>保溫電路：** 保溫電阻與保溫片約為 $1.2k\Omega$ (40W~50W)。</strong></li>
                     <li>**磁鋼：** 若不跳，測試磁鋼槓桿是否卡住。</li>
                 </ul>
                 <div class="it-note">
@@ -481,7 +502,7 @@
             <h2>2. 溫度控制失常 (過熱或不足)</h2>
             <span class="tag hot">溫控器</span>
             <p><strong>原理：</strong> 由毛細管式或雙金屬片式溫控器 (Thermostat) 控制加熱迴路的通斷。</p>
-            <p><strong>解法：</strong> 溫控器是不可維修零件。更換時注意毛細管感溫頭必須置於原設計位置，確保環境溫度偵測的準確性。</p>
+            <p><strong>解法：** 溫控器是不可維修零件。更換時注意毛細管感溫頭必須置於原設計位置，確保環境溫度偵測的準確性。</strong></p>
         </div>
     </div>
 
@@ -501,7 +522,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td rowspan="2" style="background:#eaf2f8;">🌀 電風扇</td>
+                    <td rowspan="3" style="background:#eaf2f8;">🌀 電風扇</td>
                     <td>啟動電容 (CBB61)</td>
                     <td>
                         <strong>1.5uF ~ 4.0uF</strong> (450VAC)<br>
@@ -509,9 +530,14 @@
                     <td>容值需盡量與原廠一致。耐壓只能高不能低。</td>
                 </tr>
                 <tr>
-                    <td>溫度保險絲</td>
+                    <td>AC 溫度保險絲</td>
                     <td><strong>115°C / 130°C</strong> (2A / 250V)</td>
-                    <td>位於馬達線圈內。焊接時須用尖嘴鉗散熱。</td>
+                    <td>位於馬達線圈內。</td>
+                </tr>
+                <tr>
+                    <td>DC 馬達線圈</td>
+                    <td>阻值約 $5\Omega$ ~ $10\Omega$ (三相平衡)</td>
+                    <td>用於 BLDC 馬達，若電阻不平衡則馬達損壞。</td>
                 </tr>
 
                 <tr>
@@ -530,12 +556,12 @@
                     <td rowspan="3" style="background:#f1e9f7;">⚡ 微波爐類</td>
                     <td>高壓保險絲</td>
                     <td>0.75A ~ 0.85A (5000V / 5KV)</td>
-                    <td>位於高壓電路。一般保險絲無法替代。</td>
+                    <td>位於高壓電路。</td>
                 </tr>
                 <tr>
                     <td>微動開關</td>
                     <td>16A / 250V (NO / NC)</td>
-                    <td>需確認開關類型 (常開或常閉)。</td>
+                    <td>需確認開關類型。</td>
                 </tr>
                 <tr>
                     <td>磁控管燈絲</td>
@@ -547,7 +573,7 @@
                     <td rowspan="2" style="background:#e8f5e9;">💨 吹風機</td>
                     <td>溫度保險絲</td>
                     <td>150°C ~ 190°C (10A ~ 15A)</td>
-                    <td>用於過熱保護，位於加熱線圈旁。</td>
+                    <td>用於過熱保護。</td>
                 </tr>
                 <tr>
                     <td>加熱線圈</td>
@@ -572,41 +598,68 @@
 </div>
 
 <script>
+    // 外部 Tab 切換邏輯 (主家電類別)
     function switchSection(targetId) {
         const navItems = document.querySelectorAll('.nav-item');
         const sections = document.querySelectorAll('.section');
 
-        // Remove active class from all nav items
         navItems.forEach(i => i.classList.remove('active'));
-        
-        // Hide all sections
         sections.forEach(section => section.style.display = 'none');
         
-        // Show the target section and set active class
         const targetSection = document.getElementById(targetId);
         if (targetSection) {
-            // Trigger fade-in animation
             targetSection.classList.remove('active');
-            void targetSection.offsetWidth; // Reflow
+            void targetSection.offsetWidth;
             targetSection.classList.add('active');
             targetSection.style.display = 'block';
         }
         
         document.querySelector(`.nav-item[data-target="${targetId}"]`).classList.add('active');
+        
+        // 特殊處理: 如果切換到 Fan 區，確保 AC Fan 內容是預設開啟的
+        if (targetId === 'fan') {
+            switchFanSubSection('ac-fan-content');
+        }
+    }
+    
+    // 內部 Tab 切換邏輯 (AC/DC 風扇)
+    function switchFanSubSection(targetId) {
+        const subItems = document.querySelectorAll('.fan-sub-item');
+        const subContents = document.querySelectorAll('.fan-sub-content');
+        
+        subItems.forEach(item => item.classList.remove('active'));
+        subContents.forEach(content => content.classList.remove('active'));
+        
+        const targetContent = document.getElementById(targetId);
+        if (targetContent) {
+             targetContent.classList.add('active');
+        }
+        
+        // 確保點擊的按鈕也亮起
+        document.querySelector(`.fan-sub-item[data-sub-target="${targetId}"]`).classList.add('active');
     }
 
 
     document.addEventListener('DOMContentLoaded', function() {
         const navItems = document.querySelectorAll('.nav-item');
+        const fanSubItems = document.querySelectorAll('.fan-sub-item');
         
-        // Setup initial state
-        // Use the function for initial display
+        // Setup initial state (defaults to Fan)
         switchSection('fan');
 
+        // Main Tab Click Handler
         navItems.forEach(item => {
             item.addEventListener('click', function() {
                 const target = this.getAttribute('data-target');
                 switchSection(target);
+            });
+        });
+        
+        // Fan Sub-Tab Click Handler
+        fanSubItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const target = this.getAttribute('data-sub-target');
+                switchFanSubSection(target);
             });
         });
     });
