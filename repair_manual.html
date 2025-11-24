@@ -142,7 +142,7 @@
         .tag.mech { background: #3498db; }
         .tag.elec { background: #f39c12; }
 
-        /* 圖片與影片區塊 */
+        /* 圖片與影片區塊 - 修正為純文字說明 */
         .media-container {
             margin-top: 15px;
             background: #f9f9f9;
@@ -152,26 +152,22 @@
 
         .img-placeholder {
             width: 100%;
-            height: 200px;
-            background-color: #ddd;
+            height: 120px;
+            background-color: #eee;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #666;
+            color: var(--primary);
             font-weight: bold;
             border: 2px dashed #999;
             margin-bottom: 10px;
             text-align: center;
             padding: 10px;
             box-sizing: border-box;
+            font-size: 0.9em;
         }
         
-        .img-placeholder img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
         .video-wrapper {
             position: relative;
             padding-bottom: 56.25%; /* 16:9 */
@@ -244,7 +240,7 @@
 
 <nav>
     <div class="nav-header">
-        <h1 style="margin:0; font-size: 1.2em;">古風小白屋 維修志工手冊 v2.0</h1>
+        <h1 style="margin:0; font-size: 1.2em;">古風小白屋 維修志工手冊 v2.1</h1>
     </div>
     <ul class="nav-tabs">
         <li class="nav-item active" data-target="fan">🌀 電風扇</li>
@@ -280,7 +276,7 @@
                 <p><strong>📺 參考影片：電風扇換電容教學</strong></p>
                 <div class="video-wrapper">
                     <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:#000; color:#fff; display:flex; justify-content:center; align-items:center; opacity:0.8;">
-                        (建議嵌入影片：宅爸詹姆士 - 電風扇不轉維修)
+                        (請替換此處為 Youtube 影片 iframe：宅爸詹姆士 - 電風扇不轉維修)
                     </div>
                 </div>
                 
@@ -304,7 +300,7 @@
             <div class="media-container">
                 <p><strong>📸 零件位置示意：</strong></p>
                 <div class="img-placeholder">
-                    <img src="https://placehold.co/600x200/2c3e50/FFF?text=示意圖：馬達線圈上的白色保險絲套管 (115°C/130°C 2A)" alt="保險絲位置">
+                    📸 **請替換此處為您的實體照片：**<br>馬達線圈上包覆著白色玻璃纖維管的「溫度保險絲」位置。
                 </div>
             </div>
         </div>
@@ -317,7 +313,7 @@
             <p><strong>大同電鍋常見結構：</strong>電源從底部進入後，會先經過一條<strong>溫度保險絲</strong>。這是最常壞的零件。</p>
             <div class="media-container">
                 <div class="img-placeholder">
-                    <img src="https://placehold.co/600x200/e74c3c/FFF?text=示意圖：電鍋底部+溫度保險絲位置" alt="電鍋底部">
+                    📸 **請替換此處為您的實體照片：**<br>電鍋底部拆開後，電源線與溫度保險絲的接線處。
                 </div>
                 <div class="it-note">
                     // Debug：電鍋保險絲通常用螺絲鎖附或壓接，不可焊接(因為鍋底高溫會融錫)。
@@ -359,7 +355,7 @@
             </ol>
             <div class="media-container">
                 <div class="img-placeholder">
-                    <img src="https://placehold.co/600x200/8e44ad/FFF?text=示意圖：高壓保險絲(白色管)與電容" alt="高壓部件">
+                    📸 **請替換此處為您的實體照片：**<br>變壓器、高壓電容、高壓二極體、高壓保險絲的佈局。
                 </div>
             </div>
         </div>
@@ -385,8 +381,10 @@
                 <li>檢查**過熱保護用溫度保險絲** (通常在加熱線圈附近)。</li>
                 <li>用電表量測加熱線圈 (鎳鉻絲) 是否斷路 (若阻值無限大則斷路，需更換加熱總成)。</li>
             </ol>
-            <div class="it-note">
-                // 吹風機保險絲常見規格：150°C ~ 190°C，電流 10A 以上。
+            <div class="media-container">
+                 <div class="img-placeholder">
+                    📸 **請替換此處為您的實體照片：**<br>吹風機內部加熱線圈與過熱保護保險絲的位置。
+                </div>
             </div>
         </div>
     </div>
@@ -411,6 +409,11 @@
             <span class="tag hot">溫控器</span>
             <p><strong>原理：</strong>由溫控器 (Thermostat) 控制加熱迴路的通斷。</p>
             <p><strong>解法：</strong>溫控器是不可維修零件。若溫度失準，需整組更換。更換時注意毛細管感溫頭需放在原位。</p>
+            <div class="media-container">
+                 <div class="img-placeholder">
+                    📸 **請替換此處為您的實體照片：**<br>烤箱溫控器(旋鈕後方)和感溫毛細管的位置。
+                </div>
+            </div>
         </div>
     </div>
 
@@ -496,40 +499,46 @@
 </div>
 
 <script>
+    function switchSection(targetId) {
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.section');
+
+        // Remove active class from all nav items
+        navItems.forEach(i => i.classList.remove('active'));
+        
+        // Hide all sections
+        sections.forEach(section => section.style.display = 'none');
+        
+        // Show the target section and set active class
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+            // Trigger fade-in animation
+            targetSection.classList.remove('active');
+            void targetSection.offsetWidth; // Reflow
+            targetSection.classList.add('active');
+            targetSection.style.display = 'block';
+        }
+        
+        document.querySelector(`.nav-item[data-target="${targetId}"]`).classList.add('active');
+    }
+
+
     document.addEventListener('DOMContentLoaded', function() {
         const navItems = document.querySelectorAll('.nav-item');
         const sections = document.querySelectorAll('.section');
 
-        // Initial setup
+        // Setup initial state
         sections.forEach(section => section.style.display = 'none');
-        document.getElementById('fan').style.display = 'block';
+        
+        // Use the function for initial display
+        switchSection('fan');
 
         navItems.forEach(item => {
             item.addEventListener('click', function() {
                 const target = this.getAttribute('data-target');
-                
-                // Remove active class from all nav items
-                navItems.forEach(i => i.classList.remove('active'));
-                
-                // Hide all sections
-                sections.forEach(section => section.style.display = 'none');
-                
-                // Show the target section and set active class
-                const targetSection = document.getElementById(target);
-                if (targetSection) {
-                    // Trigger fade-in animation
-                    targetSection.classList.remove('active');
-                    void targetSection.offsetWidth; // Reflow
-                    targetSection.classList.add('active');
-                    targetSection.style.display = 'block';
-                }
-                
-                this.classList.add('active');
+                switchSection(target);
             });
         });
-
-        // Add active class to the initial section's nav item
-        document.querySelector('.nav-item[data-target="fan"]').classList.add('active');
     });
 </script>
 
