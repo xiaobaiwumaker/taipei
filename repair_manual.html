@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>古風小白屋 - 家電維修數位手冊</title>
+    <title>古風小白屋 - 家電維修數位手冊 (專業詳盡版)</title>
     <style>
         :root {
             --primary: #2c3e50;
-            --accent: #e67e22; /* 零件/專業建議色 */
+            --accent: #e67e22; 
             --fan-color: #3498db;
             --cooker-color: #e74c3c;
             --micro-color: #8e44ad;
-            --dryer-color: #2ecc71; /* 吹風機 - 綠色 */
-            --oven-color: #f1c40f; /* 烤箱 - 黃色 */
+            --dryer-color: #2ecc71; 
+            --oven-color: #f1c40f; 
             --bg-color: #f4f6f7;
             --text-color: #333;
         }
@@ -234,13 +234,29 @@
             margin-top: 10px;
             border-radius: 4px;
         }
+        
+        .tech-detail {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            background: #eaf3f9;
+            border: 1px solid #b3d9ff;
+        }
+        
+        .tech-detail h3 {
+            color: #3498db;
+            margin-top: 0;
+            font-size: 1.1em;
+            border-bottom: 1px dashed #b3d9ff;
+            padding-bottom: 5px;
+        }
     </style>
 </head>
 <body>
 
 <nav>
     <div class="nav-header">
-        <h1 style="margin:0; font-size: 1.2em;">古風小白屋 維修志工手冊 v2.1</h1>
+        <h1 style="margin:0; font-size: 1.2em;">古風小白屋 維修志工手冊 v3.0 (專業詳盡版)</h1>
     </div>
     <ul class="nav-tabs">
         <li class="nav-item active" data-target="fan">🌀 電風扇</li>
@@ -262,15 +278,22 @@
         <div class="trouble-card fan-card">
             <h2>1. 馬達有「嗡嗡聲」但不轉</h2>
             <span class="tag elec">啟動電容</span> <span class="tag mech">軸承卡死</span>
-            <p><strong>判斷邏輯：</strong></p>
-            <ul>
-                <li>斷電手撥扇葉：
-                    <ul>
-                        <li><strong>很緊/卡住</strong> ➝ 軸承缺油或黏死 (需清潔上油)。</li>
-                        <li><strong>很順暢</strong> ➝ 啟動電容容量不足 (需更換)。</li>
-                    </ul>
-                </li>
-            </ul>
+            
+            <div class="tech-detail">
+                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
+                <p><strong>IT 類比：</strong> 啟動電容 (CBB61) 就像 BIOS Battery，容量衰退後無法提供足夠啟動脈衝 (Starting Torque)。</p>
+                <p><strong>🛠️ 診斷：</strong></p>
+                <ul>
+                    <li><strong>電容：</strong> 使用電容表 (Capacitance Meter) 測量容值。若實際值低於標稱值 20% 以上，必須更換。</li>
+                    <li><strong>線圈：</strong> 測量馬達繞組 (低速/中速/高速線) 的直流電阻 (Ω)。</li>
+                </ul>
+                <div class="it-note">
+                    // 典型線圈電阻 (Ω):<br>
+                    // 低速線: 約 300Ω ~ 400Ω (最大阻值)<br>
+                    // 高速線: 約 100Ω ~ 150Ω (最小阻值)<br>
+                    // 若測量為 OL (Open Loop)，代表線圈或保險絲燒斷。
+                </div>
+            </div>
             
             <div class="media-container">
                 <p><strong>📺 參考影片：電風扇換電容教學</strong></p>
@@ -279,23 +302,26 @@
                         (請替換此處為 Youtube 影片 iframe：宅爸詹姆士 - 電風扇不轉維修)
                     </div>
                 </div>
-                
-                <div class="it-note">
-                    // IT 筆記：電容就像 RAM，衰退了系統(馬達)就跑不動。
-                    <br>規格注意：14-16吋扇多為 2.0uF ~ 2.5uF。箱型扇可能達 3uF-4uF。
-                </div>
             </div>
         </div>
 
         <div class="trouble-card fan-card">
             <h2>2. 完全無聲、無反應</h2>
             <span class="tag elec">斷路</span> <span class="tag elec">溫度保險絲</span>
-            <p><strong>檢測步驟：</strong></p>
-            <ol>
-                <li>使用三用電表測量插頭兩端阻值 (Ω)。若為無限大 (OL)，代表斷路。</li>
-                <li>拆開馬達後蓋，尋找<strong>溫度保險絲</strong>。通常包在白色玻璃纖維管內。</li>
-                <li>量測保險絲兩端，若不通則需更換。</li>
-            </ol>
+            
+            <div class="tech-detail">
+                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
+                <p><strong>IT 類比：</strong> 溫度保險絲 (Thermal Fuse) 就像硬體層的 Watchdog Timer，溫度過高會強制斷電 (Hard Reset)。</p>
+                <p><strong>🛠️ 診斷：</strong></p>
+                <ul>
+                    <li><strong>AC 輸入：</strong> 測量插頭兩端，應為繞組線圈的最小電阻 (高速檔)。若為 OL，追查斷路點。</li>
+                    <li><strong>保險絲：</strong> 需拆開線圈尋找保險絲。測量其兩端，若為 OL 則更換。</li>
+                </ul>
+                <div class="it-note">
+                    // 簡化電路流程:<br>
+                    // AC -> FUSE -> TIMER -> (L/M/H) WINDINGS -> AC
+                </div>
+            </div>
             
             <div class="media-container">
                 <p><strong>📸 零件位置示意：</strong></p>
@@ -310,13 +336,26 @@
         <div class="trouble-card cooker-card">
             <h2>1. 加熱燈不亮 / 不過電</h2>
             <span class="tag elec">溫度保險絲</span> <span class="tag mech">電源線</span>
-            <p><strong>大同電鍋常見結構：</strong>電源從底部進入後，會先經過一條<strong>溫度保險絲</strong>。這是最常壞的零件。</p>
+            
+            <div class="tech-detail">
+                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
+                <p><strong>IT 類比：</strong> 電鍋是電阻性負載，電路簡單。保險絲是主要的故障點。</p>
+                <p><strong>🛠️ 診斷：</strong></p>
+                <ul>
+                    <li><strong>主加熱片：</strong> 700W~1000W 電鍋，主加熱片電阻應在 $15\Omega$ 至 $20\Omega$ 之間。若為 OL，加熱片燒毀。</li>
+                    <li><strong>保溫電路：</strong> 保溫電阻與保溫片約為 $1.2k\Omega$ (40W~50W)。</li>
+                    <li>**磁鋼：** 若不跳，測試磁鋼槓桿是否卡住。</li>
+                </ul>
+                <div class="it-note">
+                    // 簡化電路流程:<br>
+                    // AC -> [FUSE] -> [SWITCH] -> MAIN HEATER (串聯)<br>
+                    // WARMLY HEATER (並聯/高阻抗)
+                </div>
+            </div>
+            
             <div class="media-container">
                 <div class="img-placeholder">
                     📸 **請替換此處為您的實體照片：**<br>電鍋底部拆開後，電源線與溫度保險絲的接線處。
-                </div>
-                <div class="it-note">
-                    // Debug：電鍋保險絲通常用螺絲鎖附或壓接，不可焊接(因為鍋底高溫會融錫)。
                 </div>
             </div>
         </div>
@@ -324,8 +363,8 @@
         <div class="trouble-card cooker-card">
             <h2>2. 飯煮不熟就跳起來 (太早跳)</h2>
             <span class="tag mech">磁鋼限溫器</span>
-            <p><strong>原理：</strong>中間的感溫磁鋼 (Magnetic Thermostat) 磁力衰退，導致未達居里溫度 (約130°C) 就彈開。</p>
-            <p><strong>解法：</strong>更換中板磁鋼組 (拆下底部大螺帽即可更換)。</p>
+            <p><strong>原理：</strong>中間的感溫磁鋼 (Magnetic Thermostat) 磁力衰退，導致未達居里溫度 (約 $103\sim 105^\circ C$) 就彈開。</p>
+            <p><strong>解法：</strong>更換中板磁鋼組。</p>
         </div>
     </div>
 
@@ -339,20 +378,36 @@
         <div class="trouble-card micro-card">
             <h2>1. 門關了但燈不亮/不運轉</h2>
             <span class="tag elec">微動開關</span> <span class="tag elec">主保險絲</span>
-            <p><strong>微動開關邏輯 (Door Interlock)：</strong>微波爐通常有 3 個微動開關。若門勾磨損或開關接點積碳，機器會鎖死。</p>
-            <div class="it-note">
-                // Logic Gate: 所有門開關必須正確導通/斷路，HV電路才會開啟。
+            
+            <div class="tech-detail">
+                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
+                <p><strong>IT 類比：</strong> 門開關組是硬體安全閘道 (AND Gate)，所有條件必須滿足 (門關好) 才能讓 Control Board 供電。</p>
+                <p><strong>🛠️ 診斷：</strong></p>
+                <ul>
+                    <li>**微動開關：** 需確認開關類型 (NO 或 NC)，然後用電表量測其通斷狀態是否與門的開閉狀態吻合。</li>
+                    <li>**Monitor Switch (NC/常閉)：** 若此開關故障，可能導致一插電或一關門就燒斷主保險絲。</li>
+                </ul>
             </div>
         </div>
 
         <div class="trouble-card micro-card">
             <h2>2. 有運轉聲音但不熱</h2>
             <span class="tag elec">高壓保險絲</span> <span class="tag elec">磁控管</span>
-            <p><strong>檢查順序：</strong></p>
-            <ol>
-                <li>檢查高壓變壓器與電容之間的「高壓保險絲」(通常在白色塑膠殼內)。</li>
-                <li>若保險絲正常，檢查高壓二極體是否擊穿。</li>
-            </ol>
+            
+            <div class="tech-detail">
+                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
+                <p><strong>IT 類比：</strong> 這是電源供應系統 (Power Supply) 的高壓次級迴路故障。</p>
+                <p><strong>🛠️ 診斷：</strong></p>
+                <ul>
+                    <li>**磁控管 (Magnetron)：** 測量兩腳之間的燈絲電阻 (Filament Resistance)，應為 **小於 $1\Omega$** (近乎短路)。若為 OL 則磁控管失效。</li>
+                    <li>**高壓二極體 (HV Diode)：** 只能單向導通。無法用一般電表測量，需使用專業模式或 HV Diode Tester。</li>
+                    <li>**高壓電容：** 斷電放電後，用電容表測量容值 (約 0.95uF ~ 1.0uF)。若為短路或 OL 則失效。</li>
+                </ul>
+                <div class="it-note">
+                    // HV Circuit Flow:<br>
+                    // Transformer -> [FUSE] -> [DIODE + CAPACITOR] -> MAGNETRON
+                </div>
+            </div>
             <div class="media-container">
                 <div class="img-placeholder">
                     📸 **請替換此處為您的實體照片：**<br>變壓器、高壓電容、高壓二極體、高壓保險絲的佈局。
@@ -367,25 +422,34 @@
         </div>
 
         <div class="trouble-card dryer-card">
-            <h2>1. 完全不過電/不運轉</h2>
-            <span class="tag elec">電源線</span> <span class="tag elec">電源插頭</span>
-            <p><strong>判斷邏輯：</strong>吹風機電源線常因收納不當（彎折）導致內部斷裂。</p>
-            <p><strong>檢測：</strong>用三用電表測量線材兩端是否有導通。若無，沿著線材輕搖，看電表讀數是否跳動 (代表線材接觸不良)。</p>
-        </div>
-
-        <div class="trouble-card dryer-card">
-            <h2>2. 風扇轉動，但不加熱</h2>
+            <h2>1. 風扇轉動，但不加熱</h2>
             <span class="tag hot">加熱線圈</span> <span class="tag elec">過熱保護</span>
-            <p><strong>檢查順序：</strong></p>
-            <ol>
-                <li>檢查**過熱保護用溫度保險絲** (通常在加熱線圈附近)。</li>
-                <li>用電表量測加熱線圈 (鎳鉻絲) 是否斷路 (若阻值無限大則斷路，需更換加熱總成)。</li>
-            </ol>
+            
+            <div class="tech-detail">
+                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
+                <p><strong>IT 類比：</strong> 加熱線圈 (Nickel-Chrome Wire) 就像 ASIC Miner，高電阻是其特性。斷路則為 OL。</p>
+                <p><strong>🛠️ 診斷：</strong></p>
+                <ul>
+                    <li>**加熱線圈：** 設想功率 $P=1200W$。則 $R = V^2/P = 110^2 / 1200 \approx 10\Omega$。實際測量時，需確認線圈有無斷裂 (OL)。</li>
+                    <li>**保護裝置：** 吹風機常有兩個保護：溫度保險絲 (一次性) 和 溫控開關 (可復位/Reset Button)。檢查兩者是否斷路。</li>
+                </ul>
+                <div class="it-note">
+                    // 簡化電路流程:<br>
+                    // AC -> [SWITCH] -> [MOTOR] (並聯) & [HEATER COIL] (串聯保險絲)
+                </div>
+            </div>
             <div class="media-container">
                  <div class="img-placeholder">
                     📸 **請替換此處為您的實體照片：**<br>吹風機內部加熱線圈與過熱保護保險絲的位置。
                 </div>
             </div>
+        </div>
+
+        <div class="trouble-card dryer-card">
+            <h2>2. 運轉中途自動停機</h2>
+            <span class="tag elec">堵塞</span> <span class="tag hot">熱敏電阻</span>
+            <p><strong>原因：</strong> 進風口堵塞或線圈積塵，導致風量不足，機內溫度迅速超過溫控開關復位點，觸發保護。</p>
+            <p><strong>解法：</strong> 清潔進風口濾網和線圈。若故障頻發，檢查機內溫控開關是否老化。</p>
         </div>
     </div>
     
@@ -397,23 +461,27 @@
         <div class="trouble-card oven-card">
             <h2>1. 完全不加熱/不啟動</h2>
             <span class="tag mech">定時器</span> <span class="tag elec">加熱管</span>
-            <p><strong>判斷邏輯：</strong></p>
-            <ol>
-                <li>**檢查定時器 (Timer)：** 機械式烤箱的定時器是最常見的故障點 (內部接點氧化或機械卡死)。短接定時器輸入/輸出端測試加熱功能是否恢復。</li>
-                <li>**檢查加熱管：** 用電表量測上下發熱管的阻值 (Ω)。若阻值無限大，則該發熱管燒毀。</li>
-            </ol>
+            
+            <div class="tech-detail">
+                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
+                <p><strong>IT 類比：</strong> 定時器是 Cron Job，若故障則任務無法啟動。</p>
+                <p><strong>🛠️ 診斷：</strong></p>
+                <ul>
+                    <li>**定時器：** 定時器啟動後，測量其輸出端電壓 (應為 110V)。若輸入有電而輸出無電，定時器故障。</li>
+                    <li>**發熱管：** 測量發熱管兩端電阻。常見 $1000W$ 發熱管，電阻約在 $12\Omega$ 左右。若為 OL，則發熱管燒毀。</li>
+                </ul>
+                <div class="it-note">
+                    // 簡化電路流程:<br>
+                    // AC -> [TIMER] -> [THERMOSTAT] -> [SELECTOR SWITCH] -> [UPPER/LOWER HEATER]
+                </div>
+            </div>
         </div>
 
         <div class="trouble-card oven-card">
             <h2>2. 溫度控制失常 (過熱或不足)</h2>
             <span class="tag hot">溫控器</span>
-            <p><strong>原理：</strong>由溫控器 (Thermostat) 控制加熱迴路的通斷。</p>
-            <p><strong>解法：</strong>溫控器是不可維修零件。若溫度失準，需整組更換。更換時注意毛細管感溫頭需放在原位。</p>
-            <div class="media-container">
-                 <div class="img-placeholder">
-                    📸 **請替換此處為您的實體照片：**<br>烤箱溫控器(旋鈕後方)和感溫毛細管的位置。
-                </div>
-            </div>
+            <p><strong>原理：</strong> 由毛細管式或雙金屬片式溫控器 (Thermostat) 控制加熱迴路的通斷。</p>
+            <p><strong>解法：</strong> 溫控器是不可維修零件。更換時注意毛細管感溫頭必須置於原設計位置，確保環境溫度偵測的準確性。</p>
         </div>
     </div>
 
@@ -453,13 +521,13 @@
                     <td>位於鍋底。必須使用壓接或螺絲固定，不可焊接。</td>
                 </tr>
                 <tr>
-                    <td>保溫電熱片</td>
-                    <td>約 40W ~ 50W (阻值約 1.2kΩ)</td>
-                    <td></td>
+                    <td>主加熱片</td>
+                    <td>阻值約 $15\Omega$ ~ $20\Omega$ (600W~1000W)</td>
+                    <td>若 OL 則加熱片失效。</td>
                 </tr>
                 
                 <tr>
-                    <td rowspan="2" style="background:#f1e9f7;">⚡ 微波爐類</td>
+                    <td rowspan="3" style="background:#f1e9f7;">⚡ 微波爐類</td>
                     <td>高壓保險絲</td>
                     <td>0.75A ~ 0.85A (5000V / 5KV)</td>
                     <td>位於高壓電路。一般保險絲無法替代。</td>
@@ -468,6 +536,11 @@
                     <td>微動開關</td>
                     <td>16A / 250V (NO / NC)</td>
                     <td>需確認開關類型 (常開或常閉)。</td>
+                </tr>
+                <tr>
+                    <td>磁控管燈絲</td>
+                    <td>電阻 $\lt 1\Omega$</td>
+                    <td>近乎短路，若 OL 則磁控管失效。</td>
                 </tr>
 
                 <tr>
@@ -478,20 +551,20 @@
                 </tr>
                 <tr>
                     <td>加熱線圈</td>
-                    <td>阻值 < 50Ω (視功率)</td>
+                    <td>阻值約 $10\Omega$ ~ $15\Omega$ (1200W~1500W)</td>
                     <td>若線圈斷裂，阻值無限大。</td>
                 </tr>
 
                 <tr>
                     <td rowspan="2" style="background:#fcf8e3;">🍞 烤箱類</td>
-                    <td>發熱管 (上/下)</td>
-                    <td>阻值約 10Ω ~ 40Ω (視功率)</td>
+                    <td>發熱管</td>
+                    <td>阻值約 $10\Omega$ ~ $20\Omega$ (500W~1000W)</td>
                     <td>可用電表確認是否斷路。</td>
                 </tr>
                 <tr>
                     <td>定時器</td>
-                    <td>機械式 (通常不可修，需更換總成)</td>
-                    <td>若聽到卡卡聲但無法定時，多為定時器故障。</td>
+                    <td>機械式</td>
+                    <td>若輸入有電但輸出無電，則定時器故障。</td>
                 </tr>
             </tbody>
         </table>
@@ -525,11 +598,8 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         const navItems = document.querySelectorAll('.nav-item');
-        const sections = document.querySelectorAll('.section');
-
-        // Setup initial state
-        sections.forEach(section => section.style.display = 'none');
         
+        // Setup initial state
         // Use the function for initial display
         switchSection('fan');
 
