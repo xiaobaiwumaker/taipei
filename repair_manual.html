@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>古風小白屋 - 家電維修數位手冊 (V4.0 終極專業版)</title>
+    <title>古風小白屋 - 家電維修數位手冊 (V4.1 嚴謹修正版)</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -72,7 +72,6 @@
         /* Tab Active Colors */
         .nav-item[data-target="fan"] { border-color: var(--fan-color); }
         .nav-item[data-target="fan"].active { background: var(--fan-color); }
-        /* ... (其他 Tab 顏色保持不變) ... */
         .nav-item[data-target="cooker"] { border-color: var(--cooker-color); }
         .nav-item[data-target="cooker"].active { background: var(--cooker-color); }
 
@@ -130,7 +129,7 @@
             background: var(--fan-color);
             color: white;
             border-color: var(--fan-color);
-            border-bottom: 2px solid var(--fan-color); /* Overlap the main border */
+            border-bottom: 2px solid var(--fan-color); 
             position: relative;
             bottom: -2px;
         }
@@ -140,8 +139,7 @@
         .fan-sub-content.active {
             display: block;
         }
-        /* ... (其他通用樣式保持不變) ... */
-
+        
         .trouble-card {
             background: white;
             border-radius: 8px;
@@ -152,7 +150,6 @@
         }
 
         .fan-card { border-left-color: var(--fan-color); }
-        /* ... (其他卡片顏色保持不變) ... */
         .cooker-card { border-left-color: var(--cooker-color); }
         .micro-card { border-left-color: var(--micro-color); }
         .dryer-card { border-left-color: var(--dryer-color); }
@@ -230,7 +227,7 @@
 
 <nav>
     <div class="nav-header">
-        <h1 style="margin:0; font-size: 1.2em;">古風小白屋 維修志工手冊 v4.0 (終極專業版)</h1>
+        <h1 style="margin:0; font-size: 1.2em;">古風小白屋 維修志工手冊 V4.1 (嚴謹修正版)</h1>
     </div>
     <ul class="nav-tabs">
         <li class="nav-item active" data-target="fan">🌀 電風扇 (AC/DC)</li>
@@ -265,13 +262,13 @@
                     <p><strong>IT 類比：</strong> 這是 Layer 1/2 (物理層/資料連結層) 故障，必須依序檢查物理介面。</p>
                     <p><strong>🛠️ 診斷步驟：</strong></p>
                     <ol>
-                        <li>**電源線：** 用電表測量插頭兩端至機身內部接線板是否導通 (應為 $0\Omega$ 附近)。</li>
-                        <li>**開關總成：** 拆下開關，在各檔位 (1/2/3) 測量輸入端與對應輸出端之間的導通性。若某一檔位 OL，則開關需更換。</li>
+                        <li>**電源線：** 測量插頭兩端至機身內部接線板是否 **導通**。電表應顯示 **極低電阻值 (數十毫歐姆至數歐姆)**。</li>
+                        <li>**開關總成：** 在各檔位 (1/2/3) 測量輸入與對應輸出端之間的導通性。若某一檔位 OL，則開關需更換。</li>
                         <li>**溫度保險絲：** 若前兩項正常，故障點必定在馬達內的溫度保險絲 (OL)。</li>
                     </ol>
                     <div class="it-note">
                         // 診斷流程: <br>
-                        // Power Cord(0Ω) -> Switch -> [FUSE] -> Winding(Ω)
+                        // Power Cord(極低Ω) -> Switch -> [FUSE] -> Winding(Ω)
                     </div>
                 </div>
             </div>
@@ -282,11 +279,11 @@
                 
                 <div class="tech-detail">
                     <h3>📐 技術細節與診斷點 (電氣特性)</h3>
-                    <p><strong>IT 類比：</strong> 電容容量不足就像系統記憶體不足，無法啟動高負載程式 (馬達)。線圈老化就像 CPU 核心出現損壞。</p>
-                    <p><strong>🛠️ 診斷步驟：</strong></p>
+                    <p><strong>IT 類比：</strong> 電容容量不足就像系統記憶體不足，無法提供足夠的相位位移來啟動馬達。</p>
+                    <p><strong>🛠️ 診斷步驟：**</strong></p>
                     <ul>
-                        <li>**電容老化：** 使用電容表測量。若 2.0uF 測得 1.5uF (衰減 $25\%$)，必須更換。</li>
-                        <li>**線圈老化/斷線：** 測量繞組電阻。若各檔位電阻值比標稱值（例如低速 $350\Omega$）高出太多或有明顯異味，可能為線圈老化或匝間短路。</li>
+                        <li>**電容老化：** 使用電容表測量容值。若實際值低於標稱值 **$20\%$ 以上**，必須更換 (例如 2.0uF 測得 1.6uF 以下)。</li>
+                        <li>**線圈老化/斷線：** 測量繞組電阻。若各檔位電阻值與標稱值差異過大或有明顯異味，可能為線圈老化或匝間短路。</li>
                     </ul>
                     <div class="it-note">
                         // 預期電阻關係: R(Low) > R(Med) > R(High)<br>
@@ -301,7 +298,7 @@
                 
                 <div class="tech-detail">
                     <h3>📐 技術細節與診斷點 (機械潤滑)</h3>
-                    <p><strong>IT 類比：</strong> 軸承 (Bearing) 就像風扇的液壓軸，長期缺乏潤滑導致摩擦力過大 (高延遲/卡頓)。</p>
+                    <p><strong>IT 類比：</strong> 軸承 (Bearing) 就像風扇的液壓軸，缺乏潤滑導致摩擦力過大。</p>
                     <p><strong>🛠️ 診斷：</strong></p>
                     <ul>
                         <li>**潤滑：** 清潔前後軸承 (Bushings) 後，使用 **縫紉機油 (低黏度)** 或 **工業潤滑油**。**嚴禁使用 WD-40** 作為長期潤滑劑，它只適用於清潔。</li>
@@ -322,12 +319,12 @@
                 
                 <div class="tech-detail">
                     <h3>📐 技術細節與診斷點 (DC 電源與控制板)</h3>
-                    <p><strong>IT 類比：</strong> 電源供應器 (Adapter) 是外部 Power Source。主電路板 (Driver Board) 則是 CPU/Motherboard，通常是故障的核心。</p>
+                    <p><strong>IT 類比：</strong> 電源供應器 (Adapter) 是外部 Power Source。主電路板 (Driver Board) 則是 CPU/Motherboard。</p>
                     <p><strong>🛠️ 診斷步驟：</strong></p>
                     <ol>
                         <li>**電源適配器：** 測量輸出電壓 (通常為 12V 或 24V DC)。若無輸出或輸出電壓不穩，更換電源。</li>
                         <li>**驅動板輸入：** 測量 12V/24V 是否穩定送達驅動板上的主濾波電容。</li>
-                        <li>**檢查短路：** 檢查驅動板上的功率元件 (如 MOSFET/IGBT) 是否有短路現象 (Drain-Source 測量為 $0\Omega$)。</li>
+                        <li>**檢查短路：** 檢查驅動板上的功率元件 (如 MOSFET/IGBT) 是否有短路現象 (Drain-Source 測量為 **極低電阻值**)。</li>
                     </ol>
                     <div class="it-note">
                         // 典型 DC 風扇架構: <br>
@@ -364,7 +361,7 @@
                 <p><strong>🛠️ 診斷：</strong></p>
                 <ul>
                     <li><strong>主加熱片：</strong> 700W~1000W 電鍋，主加熱片電阻應在 $15\Omega$ 至 $20\Omega$ 之間。若為 OL，加熱片燒毀。</li>
-                    <li><strong>保溫電路：** 保溫電阻與保溫片約為 $1.2k\Omega$ (40W~50W)。</strong></li>
+                    <li><strong>保溫電路：</strong> 保溫電阻與保溫片約為 $1.2k\Omega$ (40W~50W)。</li>
                     <li>**磁鋼：** 若不跳，測試磁鋼槓桿是否卡住。</li>
                 </ul>
                 <div class="it-note">
@@ -415,255 +412,4 @@
             <h2>2. 有運轉聲音但不熱</h2>
             <span class="tag elec">高壓保險絲</span> <span class="tag elec">磁控管</span>
             
-            <div class="tech-detail">
-                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
-                <p><strong>IT 類比：</strong> 這是電源供應系統 (Power Supply) 的高壓次級迴路故障。</p>
-                <p><strong>🛠️ 診斷：</strong></p>
-                <ul>
-                    <li>**磁控管 (Magnetron)：** 測量兩腳之間的燈絲電阻 (Filament Resistance)，應為 **小於 $1\Omega$** (近乎短路)。若為 OL 則磁控管失效。</li>
-                    <li>**高壓二極體 (HV Diode)：** 只能單向導通。無法用一般電表測量，需使用專業模式或 HV Diode Tester。</li>
-                    <li>**高壓電容：** 斷電放電後，用電容表測量容值 (約 0.95uF ~ 1.0uF)。若為短路或 OL 則失效。</li>
-                </ul>
-                <div class="it-note">
-                    // HV Circuit Flow:<br>
-                    // Transformer -> [FUSE] -> [DIODE + CAPACITOR] -> MAGNETRON
-                </div>
-            </div>
-            <div class="media-container">
-                <div class="img-placeholder">
-                    📸 **請替換此處為您的實體照片：**<br>變壓器、高壓電容、高壓二極體、高壓保險絲的佈局。
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="dryer" class="section">
-        <div class="warning-box">
-            💡 吹風機故障多為線路/保險絲問題，檢查時需注意機身進風口濾網是否堵塞。
-        </div>
-
-        <div class="trouble-card dryer-card">
-            <h2>1. 風扇轉動，但不加熱</h2>
-            <span class="tag hot">加熱線圈</span> <span class="tag elec">過熱保護</span>
-            
-            <div class="tech-detail">
-                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
-                <p><strong>IT 類比：</strong> 加熱線圈 (Nickel-Chrome Wire) 就像 ASIC Miner，高電阻是其特性。斷路則為 OL。</p>
-                <p><strong>🛠️ 診斷：</strong></p>
-                <ul>
-                    <li>**加熱線圈：** 設想功率 $P=1200W$。則 $R = V^2/P = 110^2 / 1200 \approx 10\Omega$。實際測量時，需確認線圈有無斷裂 (OL)。</li>
-                    <li>**保護裝置：** 吹風機常有兩個保護：溫度保險絲 (一次性) 和 溫控開關 (可復位/Reset Button)。檢查兩者是否斷路。</li>
-                </ul>
-                <div class="it-note">
-                    // 簡化電路流程:<br>
-                    // AC -> [SWITCH] -> [MOTOR] (並聯) & [HEATER COIL] (串聯保險絲)
-                </div>
-            </div>
-            <div class="media-container">
-                 <div class="img-placeholder">
-                    📸 **請替換此處為您的實體照片：**<br>吹風機內部加熱線圈與過熱保護保險絲的位置。
-                </div>
-            </div>
-        </div>
-
-        <div class="trouble-card dryer-card">
-            <h2>2. 運轉中途自動停機</h2>
-            <span class="tag elec">堵塞</span> <span class="tag hot">熱敏電阻</span>
-            <p><strong>原因：</strong> 進風口堵塞或線圈積塵，導致風量不足，機內溫度迅速超過溫控開關復位點，觸發保護。</p>
-            <p><strong>解法：</strong> 清潔進風口濾網和線圈。若故障頻發，檢查機內溫控開關是否老化。</p>
-        </div>
-    </div>
-    
-    <div id="oven" class="section">
-        <div class="warning-box">
-            💡 烤箱是高功率加熱器，需特別注意發熱管的完整性及清潔。
-        </div>
-
-        <div class="trouble-card oven-card">
-            <h2>1. 完全不加熱/不啟動</h2>
-            <span class="tag mech">定時器</span> <span class="tag elec">加熱管</span>
-            
-            <div class="tech-detail">
-                <h3>📐 技術細節與診斷點 (For IT Pros)</h3>
-                <p><strong>IT 類比：</strong> 定時器是 Cron Job，若故障則任務無法啟動。</p>
-                <p><strong>🛠️ 診斷：</strong></p>
-                <ul>
-                    <li>**定時器：** 定時器啟動後，測量其輸出端電壓 (應為 110V)。若輸入有電而輸出無電，定時器故障。</li>
-                    <li>**發熱管：** 測量發熱管兩端電阻。常見 $1000W$ 發熱管，電阻約在 $12\Omega$ 左右。若為 OL，則發熱管燒毀。</li>
-                </ul>
-                <div class="it-note">
-                    // 簡化電路流程:<br>
-                    // AC -> [TIMER] -> [THERMOSTAT] -> [SELECTOR SWITCH] -> [UPPER/LOWER HEATER]
-                </div>
-            </div>
-        </div>
-
-        <div class="trouble-card oven-card">
-            <h2>2. 溫度控制失常 (過熱或不足)</h2>
-            <span class="tag hot">溫控器</span>
-            <p><strong>原理：</strong> 由毛細管式或雙金屬片式溫控器 (Thermostat) 控制加熱迴路的通斷。</p>
-            <p><strong>解法：** 溫控器是不可維修零件。更換時注意毛細管感溫頭必須置於原設計位置，確保環境溫度偵測的準確性。</strong></p>
-        </div>
-    </div>
-
-
-    <div id="specs" class="section">
-        <h2>🛠️ 常用維修零件規格表</h2>
-        <p>小白屋志工採購參考用 (數據已修正)</p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>分類</th>
-                    <th>零件</th>
-                    <th>常見規格</th>
-                    <th>備註 (IT 觀點)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td rowspan="3" style="background:#eaf2f8;">🌀 電風扇</td>
-                    <td>啟動電容 (CBB61)</td>
-                    <td>
-                        <strong>1.5uF ~ 4.0uF</strong> (450VAC)<br>
-                    </td>
-                    <td>容值需盡量與原廠一致。耐壓只能高不能低。</td>
-                </tr>
-                <tr>
-                    <td>AC 溫度保險絲</td>
-                    <td><strong>115°C / 130°C</strong> (2A / 250V)</td>
-                    <td>位於馬達線圈內。</td>
-                </tr>
-                <tr>
-                    <td>DC 馬達線圈</td>
-                    <td>阻值約 $5\Omega$ ~ $10\Omega$ (三相平衡)</td>
-                    <td>用於 BLDC 馬達，若電阻不平衡則馬達損壞。</td>
-                </tr>
-
-                <tr>
-                    <td rowspan="2" style="background:#f9e5e5;">🍚 電鍋類</td>
-                    <td>溫度保險絲</td>
-                    <td>135°C ~ 167°C (10A / 250V)</td>
-                    <td>位於鍋底。必須使用壓接或螺絲固定，不可焊接。</td>
-                </tr>
-                <tr>
-                    <td>主加熱片</td>
-                    <td>阻值約 $15\Omega$ ~ $20\Omega$ (600W~1000W)</td>
-                    <td>若 OL 則加熱片失效。</td>
-                </tr>
-                
-                <tr>
-                    <td rowspan="3" style="background:#f1e9f7;">⚡ 微波爐類</td>
-                    <td>高壓保險絲</td>
-                    <td>0.75A ~ 0.85A (5000V / 5KV)</td>
-                    <td>位於高壓電路。</td>
-                </tr>
-                <tr>
-                    <td>微動開關</td>
-                    <td>16A / 250V (NO / NC)</td>
-                    <td>需確認開關類型。</td>
-                </tr>
-                <tr>
-                    <td>磁控管燈絲</td>
-                    <td>電阻 $\lt 1\Omega$</td>
-                    <td>近乎短路，若 OL 則磁控管失效。</td>
-                </tr>
-
-                <tr>
-                    <td rowspan="2" style="background:#e8f5e9;">💨 吹風機</td>
-                    <td>溫度保險絲</td>
-                    <td>150°C ~ 190°C (10A ~ 15A)</td>
-                    <td>用於過熱保護。</td>
-                </tr>
-                <tr>
-                    <td>加熱線圈</td>
-                    <td>阻值約 $10\Omega$ ~ $15\Omega$ (1200W~1500W)</td>
-                    <td>若線圈斷裂，阻值無限大。</td>
-                </tr>
-
-                <tr>
-                    <td rowspan="2" style="background:#fcf8e3;">🍞 烤箱類</td>
-                    <td>發熱管</td>
-                    <td>阻值約 $10\Omega$ ~ $20\Omega$ (500W~1000W)</td>
-                    <td>可用電表確認是否斷路。</td>
-                </tr>
-                <tr>
-                    <td>定時器</td>
-                    <td>機械式</td>
-                    <td>若輸入有電但輸出無電，則定時器故障。</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<script>
-    // 外部 Tab 切換邏輯 (主家電類別)
-    function switchSection(targetId) {
-        const navItems = document.querySelectorAll('.nav-item');
-        const sections = document.querySelectorAll('.section');
-
-        navItems.forEach(i => i.classList.remove('active'));
-        sections.forEach(section => section.style.display = 'none');
-        
-        const targetSection = document.getElementById(targetId);
-        if (targetSection) {
-            targetSection.classList.remove('active');
-            void targetSection.offsetWidth;
-            targetSection.classList.add('active');
-            targetSection.style.display = 'block';
-        }
-        
-        document.querySelector(`.nav-item[data-target="${targetId}"]`).classList.add('active');
-        
-        // 特殊處理: 如果切換到 Fan 區，確保 AC Fan 內容是預設開啟的
-        if (targetId === 'fan') {
-            switchFanSubSection('ac-fan-content');
-        }
-    }
-    
-    // 內部 Tab 切換邏輯 (AC/DC 風扇)
-    function switchFanSubSection(targetId) {
-        const subItems = document.querySelectorAll('.fan-sub-item');
-        const subContents = document.querySelectorAll('.fan-sub-content');
-        
-        subItems.forEach(item => item.classList.remove('active'));
-        subContents.forEach(content => content.classList.remove('active'));
-        
-        const targetContent = document.getElementById(targetId);
-        if (targetContent) {
-             targetContent.classList.add('active');
-        }
-        
-        // 確保點擊的按鈕也亮起
-        document.querySelector(`.fan-sub-item[data-sub-target="${targetId}"]`).classList.add('active');
-    }
-
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const navItems = document.querySelectorAll('.nav-item');
-        const fanSubItems = document.querySelectorAll('.fan-sub-item');
-        
-        // Setup initial state (defaults to Fan)
-        switchSection('fan');
-
-        // Main Tab Click Handler
-        navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const target = this.getAttribute('data-target');
-                switchSection(target);
-            });
-        });
-        
-        // Fan Sub-Tab Click Handler
-        fanSubItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const target = this.getAttribute('data-sub-target');
-                switchFanSubSection(target);
-            });
-        });
-    });
-</script>
-
-</body>
-</html>
+            <div class="
